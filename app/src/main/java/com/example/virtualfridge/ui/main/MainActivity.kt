@@ -1,12 +1,13 @@
 package com.example.virtualfridge.ui.main
 
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualfridge.R
+import com.example.virtualfridge.ui.base.BaseActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -38,4 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showResult(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
+    companion object {
+        fun getIntent(activity: BaseActivity) = Intent(activity, MainActivity::class.java)
+    }
 }

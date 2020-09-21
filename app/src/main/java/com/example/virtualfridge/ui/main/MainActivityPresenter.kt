@@ -11,16 +11,14 @@ class MainActivityPresenter @Inject constructor(
     private val exampleApi: ExampleApi
 ) {
 
-    // TODO: proper error handler - not working at all
     fun onSendClicked(username: String): Disposable = exampleApi.getUser(username)
         .compose {
             it.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()) }
         .doOnSubscribe { view.showLoading() }
         .doOnTerminate { view.hideLoading() }
-        .doOnError {it ->
-            view.showResult("user doesn't exist")
-        }
-        .subscribe ({ view.showResult("user exist") }, {})
+        .subscribe(
+            { view.showResult("user exist") },
+            { _ -> view.showResult("user doesn't exist") })
 
 }

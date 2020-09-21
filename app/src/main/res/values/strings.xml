@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">VirtualFridge</string>
+
+    <string name="login_email">E-mail</string>
+    <string name="login_password">Password</string>
+    <string name="login_login">Log in</string>
+    <string name="login_google">Sign in with google</string>
+    <string name="login_register">Don\'t have account? Sign up</string>
+
+    <string name="register_google">Sign up with google</string>
+    <string name="register_register">Sign up</string>
+    <string name="register_password">Password</string>
+    <string name="register_first_name">Sign up with google</string>
+    <string name="register_last_name">Sign up with google</string>
+    <string name="register_email">E-mail</string>
 </resources>
