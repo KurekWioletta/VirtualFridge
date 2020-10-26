@@ -10,7 +10,10 @@
     <string name="register_google">Sign up with google</string>
     <string name="register_register">Sign up</string>
     <string name="register_password">Password</string>
-    <string name="register_first_name">Sign up with google</string>
-    <string name="register_last_name">Sign up with google</string>
+    <string name="register_first_name">First Name</string>
+    <string name="register_last_name">Last Name</string>
     <string name="register_email">E-mail</string>
+    <string name="error_password">Password has to contain 6 or more characters.</string>
+    <string name="error_field_required">This fields is required.</string>
+    <string name="error_email">The e-mail address is invalid.</string>
 </resources>

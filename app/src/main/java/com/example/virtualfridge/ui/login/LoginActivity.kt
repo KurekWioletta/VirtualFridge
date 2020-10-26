@@ -1,17 +1,19 @@
 package com.example.virtualfridge.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import com.example.virtualfridge.R
 import com.example.virtualfridge.ui.base.BaseActivity
+import com.example.virtualfridge.ui.login.google.GoogleLoginListener
+import com.example.virtualfridge.ui.login.google.GoogleLoginListener.Companion.RC_GOOGLE_LOGIN_REQUEST
 import com.example.virtualfridge.ui.main.MainActivity
 import com.example.virtualfridge.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-// needed to extend BaseActivity
-class LoginActivity : BaseActivity() {
 
-    // needed
+class LoginActivity : BaseActivity(), GoogleLoginListener, LoginListener {
+
     @Inject
     lateinit var presenter: LoginActivityPresenter
 
@@ -28,10 +30,31 @@ class LoginActivity : BaseActivity() {
         }
 
         tvRegister.setOnClickListener { openRegisterActivity() }
+
+        presenter.init()
     }
 
-    fun openMainActivity() = this.startActivity(MainActivity.getIntent(this))
+    override fun onStart() {
+        super.onStart()
+        presenter.checkForLoggedInUser()
+    }
 
-    private fun openRegisterActivity() = this.startActivity(RegisterActivity.getIntent(this))
+    // TODO: Create automatic result handler with dagger
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_GOOGLE_LOGIN_REQUEST) {
+            presenter.handleGoogleLoginResult(data)
+        }
+    }
+
+    override fun openGoogleLoginRequest(intent: Intent) = startActivityForResult(intent, RC_GOOGLE_LOGIN_REQUEST);
+
+    override fun showLoginError() {
+        // TODO: error dialog
+    }
+
+    override fun openMainActivity() = startActivity(MainActivity.getIntent(this))
+
+    private fun openRegisterActivity() = startActivity(RegisterActivity.getIntent(this))
 
 }

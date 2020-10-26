@@ -6,22 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.virtualfridge.ui.register.RegisterActivity">
 
-    <Button
-        android:id="@+id/btnRegisterGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_google"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/register_email"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegisterGoogle" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"  />
 
     <EditText
         android:id="@+id/etPassword"
