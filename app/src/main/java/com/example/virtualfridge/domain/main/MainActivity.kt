@@ -1,4 +1,4 @@
-package com.example.virtualfridge.ui.main
+package com.example.virtualfridge.domain.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualfridge.R
-import com.example.virtualfridge.ui.base.BaseActivity
+import com.example.virtualfridge.domain.base.BaseActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject

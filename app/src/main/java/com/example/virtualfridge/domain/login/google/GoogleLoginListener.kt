@@ -1,7 +1,7 @@
-package com.example.virtualfridge.ui.login.google
+package com.example.virtualfridge.domain.login.google
 
 import android.content.Intent
-import com.example.virtualfridge.ui.login.LoginListener
+import com.example.virtualfridge.domain.login.LoginListener
 
 interface GoogleLoginListener: LoginListener {
     companion object {
@@ -9,4 +9,6 @@ interface GoogleLoginListener: LoginListener {
     }
 
     fun openGoogleLoginRequest(intent: Intent)
+
+    fun showGoogleLoginError()
 }

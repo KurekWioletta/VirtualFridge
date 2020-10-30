@@ -1,7 +1,7 @@
-package com.example.virtualfridge.ui.login
+package com.example.virtualfridge.domain.login
 
 import android.content.Intent
-import com.example.virtualfridge.ui.login.google.GoogleLoginManager
+import com.example.virtualfridge.domain.login.google.GoogleLoginManager
 import javax.inject.Inject
 
 class LoginActivityPresenter @Inject constructor(
@@ -9,13 +9,15 @@ class LoginActivityPresenter @Inject constructor(
     private val googleLoginManager: GoogleLoginManager
 ) {
 
-    fun init() {
-        googleLoginManager.initializeSignInClient()
-    }
+    fun init() = googleLoginManager.initializeSignInClient()
+
+    fun resume() = googleLoginManager.initializeSignInClient()
 
     fun checkForLoggedInUser() {
         // TODO: check for cached user
-        googleLoginManager.checkForLoggedInUser()
+        if (googleLoginManager.userLoggedIn()) {
+            view.openMainActivity()
+        }
     }
 
     fun loginClicked() {

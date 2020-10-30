@@ -1,13 +1,9 @@
-package com.example.virtualfridge.ui.register
+package com.example.virtualfridge.domain.register
 
-import android.util.Patterns
 import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.ExampleApi
-import com.example.virtualfridge.ui.register.RegisterActivity.ValidationViewModel
+import com.example.virtualfridge.domain.register.RegisterActivity.ValidationViewModel
 import com.example.virtualfridge.utils.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_register.*
 import javax.inject.Inject
 
 class RegisterActivityPresenter @Inject constructor(

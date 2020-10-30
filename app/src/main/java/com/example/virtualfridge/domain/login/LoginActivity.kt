@@ -1,18 +1,18 @@
-package com.example.virtualfridge.ui.login
+package com.example.virtualfridge.domain.login
 
 import android.content.Intent
 import android.os.Bundle
 import com.example.virtualfridge.R
-import com.example.virtualfridge.ui.base.BaseActivity
-import com.example.virtualfridge.ui.login.google.GoogleLoginListener
-import com.example.virtualfridge.ui.login.google.GoogleLoginListener.Companion.RC_GOOGLE_LOGIN_REQUEST
-import com.example.virtualfridge.ui.main.MainActivity
-import com.example.virtualfridge.ui.register.RegisterActivity
+import com.example.virtualfridge.domain.base.BaseActivity
+import com.example.virtualfridge.domain.login.google.GoogleLoginListener
+import com.example.virtualfridge.domain.login.google.GoogleLoginListener.Companion.RC_GOOGLE_LOGIN_REQUEST
+import com.example.virtualfridge.domain.main.MainActivity
+import com.example.virtualfridge.domain.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
 
-class LoginActivity : BaseActivity(), GoogleLoginListener, LoginListener {
+class LoginActivity : BaseActivity(), GoogleLoginListener {
 
     @Inject
     lateinit var presenter: LoginActivityPresenter
@@ -24,12 +24,12 @@ class LoginActivity : BaseActivity(), GoogleLoginListener, LoginListener {
         btnLogin.setOnClickListener {
             presenter.loginClicked()
         }
-
         btnLoginGoogle.setOnClickListener {
             presenter.loginGoogleClicked()
         }
-
-        tvRegister.setOnClickListener { openRegisterActivity() }
+        tvRegister.setOnClickListener {
+            openRegisterActivity()
+        }
 
         presenter.init()
     }
@@ -37,6 +37,11 @@ class LoginActivity : BaseActivity(), GoogleLoginListener, LoginListener {
     override fun onStart() {
         super.onStart()
         presenter.checkForLoggedInUser()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.resume()
     }
 
     // TODO: Create automatic result handler with dagger
@@ -49,7 +54,7 @@ class LoginActivity : BaseActivity(), GoogleLoginListener, LoginListener {
 
     override fun openGoogleLoginRequest(intent: Intent) = startActivityForResult(intent, RC_GOOGLE_LOGIN_REQUEST);
 
-    override fun showLoginError() {
+    override fun showGoogleLoginError() {
         // TODO: error dialog
     }
 

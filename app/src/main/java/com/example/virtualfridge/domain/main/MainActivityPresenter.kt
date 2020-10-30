@@ -1,4 +1,4 @@
-package com.example.virtualfridge.ui.main
+package com.example.virtualfridge.domain.main
 
 import com.example.virtualfridge.data.api.ExampleApi
 import io.reactivex.android.schedulers.AndroidSchedulers

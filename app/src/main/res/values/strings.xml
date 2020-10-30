@@ -16,4 +16,7 @@
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>
     <string name="error_email">The e-mail address is invalid.</string>
+
+
+    <string name="dialog_progress">Loading...</string>
 </resources>

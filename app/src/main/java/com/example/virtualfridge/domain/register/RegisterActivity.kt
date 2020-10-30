@@ -1,9 +1,9 @@
-package com.example.virtualfridge.ui.register
+package com.example.virtualfridge.domain.register
 
 import android.content.Intent
 import android.os.Bundle
 import com.example.virtualfridge.R
-import com.example.virtualfridge.ui.base.BaseActivity
+import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.utils.*
 import kotlinx.android.synthetic.main.activity_register.*
 import javax.inject.Inject

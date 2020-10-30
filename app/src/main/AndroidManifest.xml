@@ -14,15 +14,15 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".domain.main.MainActivity"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".ui.register.RegisterActivity"
+            android:name=".domain.register.RegisterActivity"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".domain.login.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

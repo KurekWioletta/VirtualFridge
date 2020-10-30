@@ -1,9 +1,12 @@
 package com.example.virtualfridge
 
-import com.example.virtualfridge.ui.login.LoginActivity
-import com.example.virtualfridge.ui.login.LoginActivityModule
-import com.example.virtualfridge.ui.main.MainActivity
-import com.example.virtualfridge.ui.register.RegisterActivity
+import com.example.virtualfridge.domain.base.BaseActivityModule
+import com.example.virtualfridge.domain.login.LoginActivity
+import com.example.virtualfridge.domain.login.LoginActivityBindsModule
+import com.example.virtualfridge.domain.login.LoginActivityProvidesModule
+import com.example.virtualfridge.domain.main.MainActivity
+import com.example.virtualfridge.domain.register.RegisterActivity
+import com.example.virtualfridge.domain.register.RegisterActivityBindsModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -14,11 +17,16 @@ abstract class ActivitiesModule {
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [
-        LoginActivityModule::class
+        LoginActivityProvidesModule::class,
+        LoginActivityBindsModule::class,
+        BaseActivityModule::class
     ])
     abstract fun bindLoginActivity(): LoginActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [
+        RegisterActivityBindsModule::class,
+        BaseActivityModule::class
+    ])
     abstract fun bindRegisterActivity(): RegisterActivity
 
 }
