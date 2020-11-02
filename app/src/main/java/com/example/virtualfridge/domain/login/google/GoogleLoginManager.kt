@@ -58,6 +58,7 @@ class GoogleLoginManager @Inject constructor(
                     .doOnError { logout() }
                     .subscribe({
                         // TODO: save user data
+                        // TODO: in response get info if user confirmed
                         googleLoginListener.openMainActivity()
                     }, {
                         // TODO: generic error handling

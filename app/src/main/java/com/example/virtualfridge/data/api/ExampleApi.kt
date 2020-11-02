@@ -1,13 +1,18 @@
 package com.example.virtualfridge.data.api
 
+import com.example.virtualfridge.data.models.User
 import io.reactivex.Observable
-import okhttp3.ResponseBody
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 interface ExampleApi {
-
-    @GET("users/{username}")
-    fun getUser(@Path("username") username: String): Observable<ResponseBody>
+    @FormUrlEncoded
+    @POST("users/login")
+    fun loginUser(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Observable<User>
 
     @FormUrlEncoded
     @POST("users/register")
@@ -16,7 +21,7 @@ interface ExampleApi {
         @Field("password") password: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String
-    ): Observable<ResponseBody>
+    ): Observable<User>
 
     @FormUrlEncoded
     @POST("users/register_with_google")
@@ -25,5 +30,5 @@ interface ExampleApi {
         @Field("google_id") googleId: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String
-    ): Observable<ResponseBody>
+    ): Observable<User>
 }

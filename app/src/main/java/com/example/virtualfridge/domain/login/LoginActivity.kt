@@ -8,6 +8,7 @@ import com.example.virtualfridge.domain.login.google.GoogleLoginListener
 import com.example.virtualfridge.domain.login.google.GoogleLoginListener.Companion.RC_GOOGLE_LOGIN_REQUEST
 import com.example.virtualfridge.domain.main.MainActivity
 import com.example.virtualfridge.domain.register.RegisterActivity
+import com.example.virtualfridge.utils.BaseValidationViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
         setContentView(R.layout.activity_login)
 
         btnLogin.setOnClickListener {
-            presenter.loginClicked()
+            presenter.loginClicked(etEmail.text.toString(), etPassword.text.toString())
         }
         btnLoginGoogle.setOnClickListener {
             presenter.loginGoogleClicked()
@@ -52,7 +53,8 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
         }
     }
 
-    override fun openGoogleLoginRequest(intent: Intent) = startActivityForResult(intent, RC_GOOGLE_LOGIN_REQUEST);
+    override fun openGoogleLoginRequest(intent: Intent) =
+        startActivityForResult(intent, RC_GOOGLE_LOGIN_REQUEST);
 
     override fun showGoogleLoginError() {
         // TODO: error dialog
@@ -62,4 +64,15 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
 
     private fun openRegisterActivity() = startActivity(RegisterActivity.getIntent(this))
 
+    fun showValidationResults(validationViewModel: ValidationViewModel) {
+        etEmail.error = validationViewModel.emailError
+        etPassword.error = validationViewModel.passwordError
+    }
+
+    data class ValidationViewModel(
+        val emailError: String?,
+        val passwordError: String?
+    ) : BaseValidationViewModel() {
+        override fun toList() = listOf(emailError, passwordError)
+    }
 }
