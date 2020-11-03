@@ -59,7 +59,9 @@ class GoogleLoginManager @Inject constructor(
                     .subscribe({
                         // TODO: save user data
                         // TODO: in response get info if user confirmed
-                        googleLoginListener.openMainActivity()
+                        //googleLoginListener.openMainActivity()
+                        //startActivity(intent,MainActivity::class.java)
+
                     }, {
                         // TODO: generic error handling
                     })

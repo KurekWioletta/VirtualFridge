@@ -24,6 +24,8 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
 
         btnLogin.setOnClickListener {
             presenter.loginClicked(etEmail.text.toString(), etPassword.text.toString())
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity((intent))
         }
         btnLoginGoogle.setOnClickListener {
             presenter.loginGoogleClicked()
