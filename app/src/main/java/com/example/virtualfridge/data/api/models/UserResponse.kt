@@ -1,4 +1,4 @@
-package com.example.virtualfridge.data.models
+package com.example.virtualfridge.data.api.models
 
 data class UserResponse(
     val email: String,

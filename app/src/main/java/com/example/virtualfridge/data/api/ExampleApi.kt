@@ -1,6 +1,6 @@
 package com.example.virtualfridge.data.api
 
-import com.example.virtualfridge.data.models.UserResponse
+import com.example.virtualfridge.data.api.models.UserResponse
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
