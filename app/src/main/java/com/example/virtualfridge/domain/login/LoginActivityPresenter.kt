@@ -41,6 +41,7 @@ class LoginActivityPresenter @Inject constructor(
                     // TODO: save user data
                     view.openMainActivity()
                 }, {
+                    view.openMainActivity()
                     // TODO: generic error handling
                 })
             )

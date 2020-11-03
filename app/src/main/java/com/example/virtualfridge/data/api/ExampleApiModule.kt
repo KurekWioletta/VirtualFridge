@@ -1,12 +1,9 @@
 package com.example.virtualfridge.data.api
 
-import com.example.virtualfridge.BuildConfig
-import com.example.virtualfridge.R
 import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import javax.inject.Singleton
-import dagger.Provides
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -18,7 +15,8 @@ object ExampleApiModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.github.com")
+            //TODO: different port for different apk type
+            .baseUrl("http://server136455.nazwa.pl:16010")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient)
