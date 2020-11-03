@@ -1,6 +1,6 @@
 package com.example.virtualfridge.data.api
 
-import com.example.virtualfridge.data.models.User
+import com.example.virtualfridge.data.models.UserResponse
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -12,7 +12,7 @@ interface ExampleApi {
     fun loginUser(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Observable<User>
+    ): Observable<UserResponse>
 
     @FormUrlEncoded
     @POST("registration/register")
@@ -21,7 +21,7 @@ interface ExampleApi {
         @Field("password") password: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String
-    ): Observable<User>
+    ): Observable<UserResponse>
 
     @FormUrlEncoded
     @POST("registration/register_with_google")
@@ -30,5 +30,5 @@ interface ExampleApi {
         @Field("google_id") googleId: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String
-    ): Observable<User>
+    ): Observable<UserResponse>
 }
