@@ -8,14 +8,14 @@ import retrofit2.http.POST
 
 interface ExampleApi {
     @FormUrlEncoded
-    @POST("users/login")
+    @POST("user/login")
     fun loginUser(
         @Field("email") email: String,
         @Field("password") password: String
     ): Observable<User>
 
     @FormUrlEncoded
-    @POST("users/register")
+    @POST("registration/register")
     fun registerUser(
         @Field("email") email: String,
         @Field("password") password: String,
@@ -24,7 +24,7 @@ interface ExampleApi {
     ): Observable<User>
 
     @FormUrlEncoded
-    @POST("users/register_with_google")
+    @POST("registration/register_with_google")
     fun registerUserWithGoogle(
         @Field("email") email: String,
         @Field("google_id") googleId: String,
