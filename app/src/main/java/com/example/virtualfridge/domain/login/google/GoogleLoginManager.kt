@@ -2,6 +2,8 @@ package com.example.virtualfridge.domain.login.google
 
 import android.content.Intent
 import com.example.virtualfridge.data.api.ExampleApi
+import com.example.virtualfridge.data.api.models.mapToUser
+import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.login.LogoutManager
 import com.example.virtualfridge.utils.RxTransformerManager
@@ -15,6 +17,7 @@ class GoogleLoginManager @Inject constructor(
     private val activity: BaseActivity,
     private val exampleApi: ExampleApi,
     private val loginManager: LogoutManager,
+    private val userDataStore: UserDataStore,
     private val googleLoginListener: GoogleLoginListener,
     private val rxTransformerManager: RxTransformerManager
 ) {
@@ -52,12 +55,12 @@ class GoogleLoginManager @Inject constructor(
                         account.givenName ?: "",
                         account.familyName ?: ""
                     )
+                    .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { activity.showLoading() }
                     .doOnTerminate { activity.hideLoading() }
-                    .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnError { logout() }
                     .subscribe({
-                        // TODO: save user data
                         // TODO: in response get info if user confirmed
                         googleLoginListener.openMainActivity()
                     }, {

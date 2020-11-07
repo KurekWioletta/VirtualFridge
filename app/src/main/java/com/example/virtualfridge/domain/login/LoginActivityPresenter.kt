@@ -3,6 +3,8 @@ package com.example.virtualfridge.domain.login
 import android.content.Intent
 import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.ExampleApi
+import com.example.virtualfridge.data.api.models.mapToUser
+import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.login.google.GoogleLoginManager
 import com.example.virtualfridge.utils.*
 import javax.inject.Inject
@@ -10,6 +12,7 @@ import javax.inject.Inject
 class LoginActivityPresenter @Inject constructor(
     private val view: LoginActivity,
     private val exampleApi: ExampleApi,
+    private val userDataStore: UserDataStore,
     private val rxTransformerManager: RxTransformerManager,
     private val googleLoginManager: GoogleLoginManager
 ) {
@@ -19,9 +22,12 @@ class LoginActivityPresenter @Inject constructor(
     fun resume() = googleLoginManager.initializeSignInClient()
 
     fun checkForLoggedInUser() {
-        // TODO: check for cached user
-        if (googleLoginManager.userLoggedIn()) {
+        if (userDataStore.getUser() != null) {
             view.openMainActivity()
+        } else {
+            if (googleLoginManager.userLoggedIn()) {
+                googleLoginManager.logout()
+            }
         }
     }
 
@@ -34,15 +40,14 @@ class LoginActivityPresenter @Inject constructor(
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
             view.registerViewSubscription(exampleApi.loginUser(email, password)
+                .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .compose { rxTransformerManager.applyIOScheduler(it) }
                 .subscribe({
-                    // TODO: save user data
                     view.openMainActivity()
                 }, {
                     view.openMainActivity()
-                    // TODO: generic error handling
                 })
             )
         }

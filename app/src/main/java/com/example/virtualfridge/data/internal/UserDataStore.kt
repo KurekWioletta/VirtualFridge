@@ -2,27 +2,53 @@ package com.example.virtualfridge.data.internal
 
 import android.content.Context
 import androidx.datastore.DataStore
-import androidx.datastore.preferences.Preferences
-import androidx.datastore.preferences.createDataStore
-import androidx.datastore.preferences.edit
-import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.preferences.*
 import com.example.virtualfridge.data.internal.models.User
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Singleton
 
 @Singleton
-class UserDataStore @Inject constructor(
+class UserDataStore constructor(
     context: Context
 ) {
     private val dataStore: DataStore<Preferences> = context.createDataStore(name = "user_data")
 
-    fun getUser() = dataStore.data
-        .map { userData ->
-            userData[preferencesKey<User>("logged_in_user")]
+    fun getUser(): User? {
+        var user: User?
+        runBlocking {
+            user =
+                dataStore.data.map { userData ->
+                    if (userData[preferencesKey<String>("email")].isNullOrEmpty()) {
+                        null
+                    } else {
+                        User(
+                            userData[preferencesKey<String>("email")] ?: "",
+                            userData[preferencesKey<String>("first_name")] ?: "",
+                            userData[preferencesKey<String>("last_name")] ?: "",
+                            userData[preferencesKey<Boolean>("account_confirmed")] ?: false
+                        )
+                    }
+                }.first()
         }
+        return user
+    }
 
-    suspend fun cacheUser(user: User) = dataStore.edit { userData ->
-        userData[preferencesKey<User>("logged_in_user")] = user
+    fun cacheUser(user: User) = GlobalScope.launch {
+        dataStore.edit { userData ->
+            userData[preferencesKey<String>("email")] = user.email
+            userData[preferencesKey<String>("first_name")] = user.firstName
+            userData[preferencesKey<String>("last_name")] = user.lastName
+            userData[preferencesKey<Boolean>("account_confirmed")] = user.accountConfirmed
+        }
+    }
+
+    fun clearStore() = GlobalScope.launch {
+        dataStore.edit { userData ->
+            userData.clear()
+        }
     }
 }

@@ -9,6 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
+    VfApplicationModule::class,
     AndroidInjectionModule::class,
     ExampleApiModule::class,
     ActivitiesModule::class
