@@ -4,7 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.virtualfridge.R
 import com.example.virtualfridge.domain.base.BaseActivity
-import com.example.virtualfridge.utils.*
+import com.example.virtualfridge.domain.main.MainActivity
+import com.example.virtualfridge.utils.BaseValidationViewModel
 import kotlinx.android.synthetic.main.activity_register.*
 import javax.inject.Inject
 
@@ -34,11 +35,16 @@ class RegisterActivity : BaseActivity() {
         etLastName.error = validationViewModel.lastNameError
     }
 
+    fun openMainActivity() {
+        finish()
+        startActivity(MainActivity.getIntentWithClearStack(this))
+    }
+
     companion object {
         fun getIntent(activity: BaseActivity) = Intent(activity, RegisterActivity::class.java)
     }
 
-    data class ValidationViewModel (
+    data class ValidationViewModel(
         val emailError: String?,
         val passwordError: String?,
         val firstNameError: String?,

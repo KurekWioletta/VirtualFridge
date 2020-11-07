@@ -5,7 +5,6 @@ import com.example.virtualfridge.data.api.ExampleApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.base.BaseActivity
-import com.example.virtualfridge.domain.login.LogoutManager
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class GoogleLoginManager @Inject constructor(
     private val activity: BaseActivity,
     private val exampleApi: ExampleApi,
-    private val loginManager: LogoutManager,
     private val userDataStore: UserDataStore,
     private val googleLoginListener: GoogleLoginListener,
     private val rxTransformerManager: RxTransformerManager
@@ -35,7 +33,6 @@ class GoogleLoginManager @Inject constructor(
                     .build()
             )
         }
-        logout()
     }
 
     fun userLoggedIn() = GoogleSignIn.getLastSignedInAccount(activity) != null
@@ -62,8 +59,7 @@ class GoogleLoginManager @Inject constructor(
                     .doOnError { logout() }
                     .subscribe({
                         // TODO: in response get info if user confirmed
-                        //googleLoginListener.openMainActivity()
-                        //startActivity(intent,MainActivity::class.java)
+                        googleLoginListener.openMainActivity()
 
                     }, {
                         // TODO: generic error handling
@@ -77,7 +73,6 @@ class GoogleLoginManager @Inject constructor(
 
     fun logout() = mGoogleSignInClient.signOut()
         .addOnCompleteListener(activity) {
-            loginManager.logout()
         }
 
     fun deleteAccount() = mGoogleSignInClient.revokeAccess()

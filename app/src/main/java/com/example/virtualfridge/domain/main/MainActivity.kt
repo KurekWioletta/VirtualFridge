@@ -4,67 +4,95 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.virtualfridge.R
 import com.example.virtualfridge.domain.base.BaseActivity
-import com.example.virtualfridge.domain.login.LoginActivity
-import dagger.android.AndroidInjection
+import com.example.virtualfridge.domain.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var presenter: MainActivityPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+    @Inject
+    lateinit var adapter: MainActivityAdapter
 
+    @Inject
+    lateinit var fragmentManager: FragmentManager
+
+    private var selectedPosition = -1
+    private var activeFragment: Fragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        btnSend.setOnClickListener {
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_board -> selectPage(0)
+                R.id.action_calendar -> selectPage(1)
+                R.id.action_family -> selectPage(2)
+            }
+            true
         }
-
+        selectPage(0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu_main, menu)
+        inflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_logout -> {
-                Toast.makeText(this, "Bye bye", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                // TODO: clear cache , close connection to server
+            R.id.action_settings -> {
+                startActivity(SettingsActivity.getIntent(this))
                 true
             }
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
-
     }
 
-    // TODO: create generic loading state and move to base
-    fun showLoading() {
-        pbLoading.visibility = VISIBLE
+    private fun selectPage(position: Int) {
+        // TODO: cache current page properly
+        if (selectedPosition != position) {
+            selectedPosition = position
+
+            var selectedFragment = fragmentManager.findFragmentByTag(tagForFragment(position))
+            val transaction = fragmentManager.beginTransaction().setReorderingAllowed(true)
+
+            if (selectedFragment == null) {
+                selectedFragment = adapter.getItem(position)
+                transaction.add(
+                    R.id.flFragmentContainer,
+                    selectedFragment,
+                    tagForFragment(position)
+                )
+            }
+            if (activeFragment != null) {
+                transaction.hide(activeFragment as Fragment)
+            }
+            // TODO: set animation for transaction
+            transaction.show(selectedFragment).commit()
+            activeFragment = selectedFragment
+        }
     }
 
-    fun hideLoading() {
-        pbLoading.visibility = GONE
-    }
-
-    fun showResult(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    private fun tagForFragment(position: Int) = "MainActivityFragment$position"
 
     companion object {
         fun getIntent(activity: BaseActivity) = Intent(activity, MainActivity::class.java)
+
+        fun getIntentWithClearStack(activity: BaseActivity) =
+            Intent(
+                activity,
+                MainActivity::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 }

@@ -13,16 +13,17 @@
     <string name="register_first_name">First Name</string>
     <string name="register_last_name">Last Name</string>
     <string name="register_email">E-mail</string>
+
+    <string name="settings_logout">Log out</string>
+    <string name="settings_title">Settings</string>
+
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>
     <string name="error_email">The e-mail address is invalid.</string>
 
+    <string name="dialog_progress">Loading…</string>
 
-    <string name="dialog_progress">Loading...</string>
-
-
-    <string name="menu_board">Board</string>
-    <string name="menu_calendar">Calendar</string>
-    <string name="menu_family">Family</string>
-    <string name="menu_logout">Logout</string>
+    <string name="navigation_menu_board">Board</string>
+    <string name="navigation_menu_calendar">Calendar</string>
+    <string name="navigation_menu_family">Family</string>
 </resources>

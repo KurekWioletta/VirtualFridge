@@ -24,8 +24,6 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
 
         btnLogin.setOnClickListener {
             presenter.loginClicked(etEmail.text.toString(), etPassword.text.toString())
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity((intent))
         }
         btnLoginGoogle.setOnClickListener {
             presenter.loginGoogleClicked()
@@ -62,7 +60,10 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
         // TODO: error dialog
     }
 
-    override fun openMainActivity() = startActivity(MainActivity.getIntent(this))
+    override fun openMainActivity() {
+        finish()
+        startActivity(MainActivity.getIntentWithClearStack(this))
+    }
 
     private fun openRegisterActivity() = startActivity(RegisterActivity.getIntent(this))
 
@@ -76,5 +77,9 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
         val passwordError: String?
     ) : BaseValidationViewModel() {
         override fun toList() = listOf(emailError, passwordError)
+    }
+
+    companion object {
+        fun getIntent(activity: BaseActivity) = Intent(activity, LoginActivity::class.java)
     }
 }

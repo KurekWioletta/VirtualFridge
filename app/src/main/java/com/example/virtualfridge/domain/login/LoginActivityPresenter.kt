@@ -6,7 +6,9 @@ import com.example.virtualfridge.data.api.ExampleApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.login.google.GoogleLoginManager
-import com.example.virtualfridge.utils.*
+import com.example.virtualfridge.utils.RxTransformerManager
+import com.example.virtualfridge.utils.validate
+import com.example.virtualfridge.utils.validationResult
 import javax.inject.Inject
 
 class LoginActivityPresenter @Inject constructor(
@@ -33,8 +35,8 @@ class LoginActivityPresenter @Inject constructor(
 
     fun loginClicked(email: String, password: String) {
         val validationViewModel = LoginActivity.ValidationViewModel(
-            email.validate(view.getString(R.string.error_email)) { it.isValidEmail() },
-            password.validate(view.getString(R.string.error_password)) { it.isValidPassword() }
+            email.validate(view.getString(R.string.error_field_required)) { it.isNotEmpty() },
+            password.validate(view.getString(R.string.error_field_required)) { it.isNotEmpty() }
         )
 
         view.showValidationResults(validationViewModel)
@@ -45,9 +47,9 @@ class LoginActivityPresenter @Inject constructor(
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
                 .subscribe({
-                    view.openMainActivity()
+                    view.finish()
                 }, {
-                    view.openMainActivity()
+                    // TODO: error handling
                 })
             )
         }
