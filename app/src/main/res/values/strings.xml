@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">VirtualFridge</string>
 
-    <string name="login_email">E-mail</string>
+    <string name="email">E-mail</string>
+
     <string name="login_password">Password</string>
     <string name="login_login">Log in</string>
     <string name="login_google">Sign in with google</string>
@@ -12,10 +13,18 @@
     <string name="register_password">Password</string>
     <string name="register_first_name">First Name</string>
     <string name="register_last_name">Last Name</string>
-    <string name="register_email">E-mail</string>
 
     <string name="settings_logout">Log out</string>
     <string name="settings_title">Settings</string>
+
+    <string name="family_your_family_label">Your current family</string>
+    <string name="family_your_family_leave_btn">Leave</string>
+    <string name="family_invite_label">Invite member</string>
+    <string name="family_invite_btn">Invite</string>
+    <string name="family_invitations_label">Invitations</string>
+    <string name="family_create_family_label">Create family</string>
+    <string name="family_create_family_btn">Create</string>
+    <string name="family_create_family_name">Family name</string>
 
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>

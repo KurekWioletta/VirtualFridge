@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:hint="@string/login_email"
+        android:hint="@string/email"
         android:imeOptions="actionNext"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
