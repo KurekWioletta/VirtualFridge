@@ -12,7 +12,8 @@ import javax.inject.Singleton
     VfApplicationModule::class,
     AndroidInjectionModule::class,
     ExampleApiModule::class,
-    ActivitiesModule::class
+    ActivitiesModule::class,
+    FragmentsModule::class
 ])
 interface VfApplicationComponent {
 
