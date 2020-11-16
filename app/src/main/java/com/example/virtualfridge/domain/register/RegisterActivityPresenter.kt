@@ -15,7 +15,7 @@ class RegisterActivityPresenter @Inject constructor(
     private val rxTransformerManager: RxTransformerManager
 ) {
 
-    fun onRegisterUserClicked(
+    fun registerUserClicked(
         email: String,
         password: String,
         firstName: String,

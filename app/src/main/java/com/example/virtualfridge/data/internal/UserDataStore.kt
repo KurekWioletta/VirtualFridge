@@ -29,6 +29,7 @@ class UserDataStore constructor(
                             userData[preferencesKey<String>("email")] ?: "",
                             userData[preferencesKey<String>("first_name")] ?: "",
                             userData[preferencesKey<String>("last_name")] ?: "",
+                            userData[preferencesKey<String>("family_name")],
                             userData[preferencesKey<Boolean>("account_confirmed")] ?: false
                         )
                     }
@@ -43,7 +44,34 @@ class UserDataStore constructor(
             userData[preferencesKey<String>("first_name")] = user.firstName
             userData[preferencesKey<String>("last_name")] = user.lastName
             userData[preferencesKey<Boolean>("account_confirmed")] = user.accountConfirmed
+            user.familyName?.run {
+                userData[preferencesKey<String>("family_name")] = this
+            }
         }
+    }
+
+    fun addToFamily(familyName: String) = runBlocking {
+        dataStore.edit { userData ->
+            userData[preferencesKey<String>("family_name")] = familyName
+        }
+    }
+
+    fun removeFromFamily() =
+        runBlocking {
+            dataStore.edit { userData ->
+                userData.remove(preferencesKey<String>("family_name"))
+            }
+        }
+
+    fun familyName(): String? {
+        var familyName: String?
+        runBlocking {
+            familyName =
+                dataStore.data.map { userData ->
+                    userData[preferencesKey<String>("family_name")]
+                }.first()
+        }
+        return familyName
     }
 
     fun clearStore() = GlobalScope.launch {

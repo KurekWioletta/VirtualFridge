@@ -6,9 +6,10 @@ data class UserResponse(
     val email: String,
     val firstName: String,
     val lastName: String,
+    val familyName: String?,
     val accountConfirmed: Boolean
 )
 
 fun UserResponse.mapToUser(): User = this.run {
-    User(email, firstName, lastName, accountConfirmed)
+    User(email, firstName, lastName, familyName, accountConfirmed)
 }

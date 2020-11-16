@@ -25,6 +25,16 @@
     <string name="family_create_family_label">Create family</string>
     <string name="family_create_family_btn">Create</string>
     <string name="family_create_family_name">Family name</string>
+    <string name="family_invitations_accept_btn">Accept</string>
+    <string name="family_invitations_decline_btn">Decline</string>
+    <string name="family_leave_family_alert">You have to leave family before accepting invitation</string>
+
+    <string name="create_note_title">Title</string>
+    <string name="create_note_description">Description…</string>
+    <string name="create_note_place">Place</string>
+    <string name="create_note_start_date">Start date</string>
+    <string name="create_note_end_date">End date</string>
+    <string name="create_note_create_note">Create note</string>
 
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>

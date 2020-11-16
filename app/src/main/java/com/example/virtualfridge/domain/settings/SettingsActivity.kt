@@ -18,7 +18,7 @@ class SettingsActivity : BaseActivity() {
         setContentView(R.layout.activity_settings)
 
         btnLogout.setOnClickListener {
-            presenter.logout()
+            presenter.logoutClicked()
         }
     }
 

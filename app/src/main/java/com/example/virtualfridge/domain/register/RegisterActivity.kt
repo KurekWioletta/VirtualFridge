@@ -19,7 +19,7 @@ class RegisterActivity : BaseActivity() {
         setContentView(R.layout.activity_register)
 
         btnRegister.setOnClickListener {
-            presenter.onRegisterUserClicked(
+            presenter.registerUserClicked(
                 etEmail.text.toString(),
                 etPassword.text.toString(),
                 etFirstName.text.toString(),

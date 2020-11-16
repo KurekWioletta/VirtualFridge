@@ -8,7 +8,7 @@ class SettingsActivityPresenter @Inject constructor(
     private val logoutManager: LogoutManager
 ) {
 
-    fun logout() {
+    fun logoutClicked() {
         logoutManager.logout()
         view.openLoginActivity()
     }
