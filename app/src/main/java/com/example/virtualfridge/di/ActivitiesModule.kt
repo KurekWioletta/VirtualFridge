@@ -1,6 +1,8 @@
-package com.example.virtualfridge
+package com.example.virtualfridge.di
 
 import com.example.virtualfridge.domain.base.BaseActivityModule
+import com.example.virtualfridge.domain.createEvent.CreateEventActivity
+import com.example.virtualfridge.domain.createEvent.CreateEventActivityBindsModule
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity
 import com.example.virtualfridge.domain.createNote.CreateNoteActivityBindsModule
 import com.example.virtualfridge.domain.login.LoginActivity
@@ -54,6 +56,14 @@ abstract class ActivitiesModule {
         ]
     )
     abstract fun bindRegisterActivity(): RegisterActivity
+
+    @ContributesAndroidInjector(
+        modules = [
+            CreateEventActivityBindsModule::class,
+            BaseActivityModule::class
+        ]
+    )
+    abstract fun bindCreateEventActivity(): CreateEventActivity
 
     @ContributesAndroidInjector(
         modules = [

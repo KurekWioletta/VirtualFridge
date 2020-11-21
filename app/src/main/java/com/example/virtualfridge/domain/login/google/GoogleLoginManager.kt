@@ -1,7 +1,7 @@
 package com.example.virtualfridge.domain.login.google
 
 import android.content.Intent
-import com.example.virtualfridge.data.api.ExampleApi
+import com.example.virtualfridge.data.api.UserApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.base.BaseActivity
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class GoogleLoginManager @Inject constructor(
     private val activity: BaseActivity,
-    private val exampleApi: ExampleApi,
+    private val userApi: UserApi,
     private val userDataStore: UserDataStore,
     private val googleLoginListener: GoogleLoginListener,
     private val rxTransformerManager: RxTransformerManager
@@ -45,7 +45,7 @@ class GoogleLoginManager @Inject constructor(
             val account = GoogleSignIn.getSignedInAccountFromIntent(intent)
                 .getResult(ApiException::class.java)
             if (account != null) {
-                activity.registerViewSubscription(exampleApi
+                activity.registerViewSubscription(userApi
                     .registerUserWithGoogle(
                         account.email ?: "",
                         account.id ?: "",

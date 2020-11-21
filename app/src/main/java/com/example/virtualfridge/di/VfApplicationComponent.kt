@@ -1,7 +1,8 @@
-package com.example.virtualfridge
+package com.example.virtualfridge.di
 
 import android.app.Application
-import com.example.virtualfridge.data.api.ExampleApiModule
+import com.example.virtualfridge.VfApplication
+import com.example.virtualfridge.VfApplicationModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -11,7 +12,7 @@ import javax.inject.Singleton
 @Component(modules = [
     VfApplicationModule::class,
     AndroidInjectionModule::class,
-    ExampleApiModule::class,
+    ApisModule::class,
     ActivitiesModule::class,
     FragmentsModule::class
 ])

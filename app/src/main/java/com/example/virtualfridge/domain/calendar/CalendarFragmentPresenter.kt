@@ -1,7 +1,8 @@
 package com.example.virtualfridge.domain.calendar
 
 import android.util.Log
-import com.example.virtualfridge.domain.calendar.notes.NoteViewModel
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMember
+import com.example.virtualfridge.domain.calendar.events.EventViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -15,11 +16,26 @@ class CalendarFragmentPresenter @Inject constructor(
     private val selectedDayFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
 
     fun init() {
-        // TODO: download notes, cache notes, update view
-        view.updateNotes(
-            view.currentDay, mapOf(
+        // TODO: download family members, download notes, cache notes, update view
+        view.setUpSpinner(
+            listOf(
+                FamilyMember("1", "Jan", "Kowalski"),
+                FamilyMember("2", "Ania", "Kowalska")
+            )
+        )
+        view.updateEvents(
+            mapOf(
                 view.currentDay.plusDays(1) to true,
                 view.currentDay.plusDays(2) to true
+            )
+        )
+    }
+
+    fun familyMemberSelected(familyMemberId: String) {
+        view.updateEvents(
+            mapOf(
+                view.currentDay.plusDays(1) to true,
+                view.currentDay.plusDays(5) to true
             )
         )
     }
@@ -30,7 +46,7 @@ class CalendarFragmentPresenter @Inject constructor(
         if (view.selectedDate != date) {
             view.updateDate(
                 date, selectedDayFormatter.format(date), listOf(
-                    NoteViewModel(
+                    EventViewModel(
                         "",
                         "titleNote2",
                         "contentNote2",
@@ -38,7 +54,7 @@ class CalendarFragmentPresenter @Inject constructor(
                         view.currentDay,
                         view.currentDay
                     ),
-                    NoteViewModel(
+                    EventViewModel(
                         "",
                         "titleNote1",
                         "contentNote1",
@@ -51,7 +67,7 @@ class CalendarFragmentPresenter @Inject constructor(
         }
     }
 
-    fun noteClicked(note: NoteViewModel) {
-        Log.i("TMP", note.title)
+    fun eventClicked(event: EventViewModel) {
+        Log.i("TMP", event.title)
     }
 }

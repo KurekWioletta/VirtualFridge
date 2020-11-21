@@ -2,8 +2,10 @@ package com.example.virtualfridge.domain.createNote
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import com.example.virtualfridge.R
 import com.example.virtualfridge.domain.base.BaseActivity
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMember
 import com.example.virtualfridge.utils.BaseValidationViewModel
 import kotlinx.android.synthetic.main.activity_create_note.*
 import javax.inject.Inject
@@ -19,23 +21,27 @@ class CreateNoteActivity : BaseActivity() {
 
         btnCreateNote.setOnClickListener {
             presenter.createNoteClicked(
-                etTitle.text.toString(),
-                etDescription.text.toString(),
-                etPlace.text.toString(),
-                etStartDate.text.toString(),
-                etEndDate.text.toString()
+                (spFamilyMembers.selectedItem as FamilyMember).id,
+                etNote.text.toString()
             )
         }
+
+        presenter.init()
+    }
+
+    fun setUpSpinner(members: List<FamilyMember>) {
+        spFamilyMembers.adapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, members)
     }
 
     fun showValidationResults(validationViewModel: ValidationViewModel) {
-        etTitle.error = validationViewModel.titleError
+        etNote.error = validationViewModel.noteError
     }
 
     data class ValidationViewModel(
-        val titleError: String?
+        val noteError: String?
     ) : BaseValidationViewModel() {
-        override fun toList() = listOf(titleError)
+        override fun toList() = listOf(noteError)
     }
 
     companion object {

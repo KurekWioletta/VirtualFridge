@@ -1,19 +1,22 @@
 package com.example.virtualfridge.domain.calendar
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualfridge.R
 import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.base.BaseFragment
-import com.example.virtualfridge.domain.calendar.notes.NoteViewModel
-import com.example.virtualfridge.domain.createNote.CreateNoteActivity
+import com.example.virtualfridge.domain.calendar.events.EventViewModel
+import com.example.virtualfridge.domain.createEvent.CreateEventActivity
 import com.example.virtualfridge.utils.ViewComponentsAdapter
-import com.example.virtualfridge.utils.ViewComponentsAdapter.Companion.NOTES
+import com.example.virtualfridge.utils.ViewComponentsAdapter.Companion.EVENTS
 import com.example.virtualfridge.utils.invisible
 import com.example.virtualfridge.utils.visible
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -32,13 +35,14 @@ import java.time.temporal.WeekFields
 import java.util.*
 import javax.inject.Inject
 
+
 class CalendarFragment : BaseFragment() {
 
     @Inject
     lateinit var presenter: CalendarFragmentPresenter
 
-    private lateinit var adapter: ViewComponentsAdapter<NoteViewModel>
-    private val notes = mutableMapOf<LocalDate, Boolean>()
+    private lateinit var adapter: ViewComponentsAdapter<EventViewModel>
+    private val events = mutableMapOf<LocalDate, Boolean>()
 
     val currentDay: LocalDate = LocalDate.now()
     var selectedDate: LocalDate? = null
@@ -48,8 +52,9 @@ class CalendarFragment : BaseFragment() {
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = ViewComponentsAdapter(NOTES, {
-            presenter.noteClicked(it)
+        adapter = ViewComponentsAdapter(EVENTS, {
+            showSelectEventOptionDialog()
+            presenter.eventClicked(it)
         })
         return inflater.inflate(R.layout.fragment_calendar, parent, false)
     }
@@ -57,8 +62,10 @@ class CalendarFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rvNotes.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rvNotes.adapter = adapter
+        presenter.init()
+
+        rvEvents.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvEvents.adapter = adapter
 
         ivNextMonth.setOnClickListener {
             calendarView.findFirstVisibleMonth()?.let {
@@ -70,8 +77,8 @@ class CalendarFragment : BaseFragment() {
                 calendarView.smoothScrollToMonth(it.yearMonth.previous)
             }
         }
-        fabCreateNote.setOnClickListener {
-            startActivity(CreateNoteActivity.getIntent(activity as BaseActivity))
+        fabCreateEvent.setOnClickListener {
+            startActivity(CreateEventActivity.getIntent(activity as BaseActivity))
         }
 
         setUpCalendarView(view)
@@ -80,15 +87,13 @@ class CalendarFragment : BaseFragment() {
                 selectDate(currentDay)
             }
         }
-
-        presenter.init()
     }
 
-    fun updateDate(date: LocalDate, formattedDate: String, notes: List<NoteViewModel>) {
+    fun updateDate(date: LocalDate, formattedDate: String, events: List<EventViewModel>) {
         selectedDate?.let { calendarView.notifyDateChanged(it) }
         selectedDate = date
         calendarView.notifyDateChanged(date)
-        adapter.setItems(notes)
+        adapter.setItems(events)
         tvSelectedDay.text = formattedDate
     }
 
@@ -96,28 +101,55 @@ class CalendarFragment : BaseFragment() {
         tvMonth.text = formattedDate
     }
 
-    fun updateNotes(date: LocalDate, notes: Map<LocalDate, Boolean>) {
-        this.notes.clear()
-        this.notes.putAll(notes)
-        calendarView.notifyDateChanged(date)
+    fun updateEvents(events: Map<LocalDate, Boolean>) {
+        this.events.clear()
+        this.events.putAll(events)
+        events.keys.forEach {
+            calendarView.adapter?.run {
+                calendarView.notifyDateChanged(it)
+            }
+        }
     }
 
     fun openNoteDetailsActivity() {
 
     }
 
-    fun setUpSpinner(members: List<String>) {
-//        ArrayAdapter.createFromResource(
-//            requireContext(),
-//            members,
-//            android.R.layout.simple_spinner_item
-//        ).also { adapter ->
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//            spinner.adapter = adapter
-//        }
+    fun setUpSpinner(members: List<FamilyMember>) {
+        spFamilyMembers.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, members)
+
+        spFamilyMembers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                presenter.familyMemberSelected((parent.getItemAtPosition(position) as FamilyMember).id)
+            }
+        }
     }
 
     private fun selectDate(date: LocalDate) = presenter.dateSelected(date)
+
+    private fun showSelectEventOptionDialog() =
+        AlertDialog.Builder(context)
+            .setItems(
+                arrayOf(
+                    getString(R.string.calendar_edit_event),
+                    getString(R.string.calendar_delete_event)
+                )
+            ) { _, which ->
+                when (which) {
+                    0, 1, 2, 3, 4 -> {
+                    }
+                }
+            }
+            .create()
+            .show()
 
     private fun setUpCalendarView(rootView: View) {
         val currentMonth = YearMonth.now()
@@ -169,7 +201,7 @@ class CalendarFragment : BaseFragment() {
                         }
                         else -> {
                             container.tvDay.markDay(rootView.context, null, R.color.calendar_black)
-                            container.vDayOverlay.visible(notes.contains(day.date))
+                            container.vDayOverlay.visible(events.contains(day.date))
                         }
                     }
                 } else {
@@ -187,5 +219,13 @@ class CalendarFragment : BaseFragment() {
         calendarView.monthScrollListener = {
             presenter.monthChanged(it.yearMonth)
         }
+    }
+
+    data class FamilyMember(
+        val id: String,
+        val name: String,
+        val surname: String
+    ) {
+        override fun toString(): String = "$name $surname"
     }
 }

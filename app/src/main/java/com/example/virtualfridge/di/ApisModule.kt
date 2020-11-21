@@ -1,5 +1,7 @@
-package com.example.virtualfridge.data.api
+package com.example.virtualfridge.di
 
+import com.example.virtualfridge.data.api.NotesApi
+import com.example.virtualfridge.data.api.UserApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -8,10 +10,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
-object ExampleApiModule {
+object ApisModule {
 
-    // TODO: proper di setup - singletons, activity modules etc
-    // TODO: headers, interceptors
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -27,8 +27,9 @@ object ExampleApiModule {
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder().build()
 
     @Provides
-    fun provideExampleApi(retrofit: Retrofit): ExampleApi {
-        return retrofit.create(ExampleApi::class.java)
-    }
+    fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
+
+    @Provides
+    fun provideBoardApi(retrofit: Retrofit): NotesApi = retrofit.create(NotesApi::class.java)
 
 }

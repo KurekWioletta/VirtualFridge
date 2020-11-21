@@ -26,6 +26,7 @@ class UserDataStore constructor(
                         null
                     } else {
                         User(
+                            userData[preferencesKey<String>("id")] ?: "",
                             userData[preferencesKey<String>("email")] ?: "",
                             userData[preferencesKey<String>("first_name")] ?: "",
                             userData[preferencesKey<String>("last_name")] ?: "",
@@ -38,8 +39,12 @@ class UserDataStore constructor(
         return user
     }
 
+    fun getLoggedInUser(): User = getUser()!!
+
     fun cacheUser(user: User) = GlobalScope.launch {
         dataStore.edit { userData ->
+            // TODO: remove ?: ""
+            userData[preferencesKey<String>("id")] = user.id ?: ""
             userData[preferencesKey<String>("email")] = user.email
             userData[preferencesKey<String>("first_name")] = user.firstName
             userData[preferencesKey<String>("last_name")] = user.lastName

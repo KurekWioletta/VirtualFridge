@@ -1,5 +1,6 @@
-package com.example.virtualfridge
+package com.example.virtualfridge.di
 
+import com.example.virtualfridge.domain.board.BoardFragment
 import com.example.virtualfridge.domain.calendar.CalendarFragment
 import com.example.virtualfridge.domain.family.FamilyFragment
 import dagger.Module
@@ -19,5 +20,11 @@ abstract class FragmentsModule {
         ]
     )
     abstract fun bindFamilyFragment(): FamilyFragment
+
+    @ContributesAndroidInjector(
+        modules = [
+        ]
+    )
+    abstract fun bindBoardFragment(): BoardFragment
 
 }

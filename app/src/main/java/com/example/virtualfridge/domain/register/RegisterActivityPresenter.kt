@@ -1,7 +1,7 @@
 package com.example.virtualfridge.domain.register
 
 import com.example.virtualfridge.R
-import com.example.virtualfridge.data.api.ExampleApi
+import com.example.virtualfridge.data.api.UserApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.register.RegisterActivity.ValidationViewModel
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class RegisterActivityPresenter @Inject constructor(
     private val view: RegisterActivity,
-    private val exampleApi: ExampleApi,
+    private val userApi: UserApi,
     private val userDataStore: UserDataStore,
     private val rxTransformerManager: RxTransformerManager
 ) {
@@ -31,7 +31,7 @@ class RegisterActivityPresenter @Inject constructor(
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
             view.registerViewSubscription(
-                exampleApi.registerUser(email, password, firstName, lastName)
+                userApi.registerUser(email, password, firstName, lastName)
                     .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .subscribe({

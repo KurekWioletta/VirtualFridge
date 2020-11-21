@@ -4,46 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.createNote.CreateNoteActivity">
+    tools:context="com.example.virtualfridge.domain.createEvent.CreateEventActivity">
 
-    <EditText
-        android:id="@+id/etTitle"
+    <Spinner
+        android:id="@+id/spFamilyMembers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/create_note_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etDescription"
+        android:id="@+id/etNote"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:hint="@string/create_note_description"
+        android:hint="@string/create_note_note"
         android:inputType="text|textMultiLine"
         android:gravity="top"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
-
-    <EditText
-        android:id="@+id/etPlace"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/create_note_place"
-        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
-
-    <EditText
-        android:id="@+id/etStartDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:hint="@string/create_note_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/etPlace" />
-
-    <EditText
-        android:id="@+id/etEndDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:hint="@string/create_note_end_date"
-        app:layout_constraintTop_toBottomOf="@+id/etStartDate" />
+        app:layout_constraintTop_toBottomOf="@+id/spFamilyMembers" />
 
     <Button
         android:id="@+id/btnCreateNote"
@@ -52,6 +28,6 @@
         android:text="@string/create_note_create_note"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEndDate" />
+        app:layout_constraintTop_toBottomOf="@+id/etNote" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

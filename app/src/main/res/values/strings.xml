@@ -17,6 +17,14 @@
     <string name="settings_logout">Log out</string>
     <string name="settings_title">Settings</string>
 
+    <string name="board_delete_note">Are you sure you want to delete this note?</string>
+
+    <string name="calendar_edit_event">Edit event</string>
+    <string name="calendar_delete_event">Delete event</string>
+
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
     <string name="family_your_family_label">Your current family</string>
     <string name="family_your_family_leave_btn">Leave</string>
     <string name="family_invite_label">Invite member</string>
@@ -29,11 +37,14 @@
     <string name="family_invitations_decline_btn">Decline</string>
     <string name="family_leave_family_alert">You have to leave family before accepting invitation</string>
 
-    <string name="create_note_title">Title</string>
-    <string name="create_note_description">Description…</string>
-    <string name="create_note_place">Place</string>
-    <string name="create_note_start_date">Start date</string>
-    <string name="create_note_end_date">End date</string>
+    <string name="create_event_title">Title</string>
+    <string name="create_event_description">Description…</string>
+    <string name="create_event_place">Place</string>
+    <string name="create_event_start_date">Start date</string>
+    <string name="create_event_end_date">End date</string>
+    <string name="create_event_create_event">Create event</string>
+
+    <string name="create_note_note">Note…</string>
     <string name="create_note_create_note">Create note</string>
 
     <string name="error_password">Password has to contain 6 or more characters.</string>

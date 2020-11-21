@@ -7,6 +7,7 @@ import javax.inject.Inject
 class DialogManager @Inject constructor(
     private val fragmentManager: FragmentManager
 ){
+
     // TODO: work on BaseDialog
     fun showDialog(dialog: VfProgressDialog) {
         dialog.show(fragmentManager, dialog.dialogTag)
