@@ -1,5 +1,6 @@
 package com.example.virtualfridge.di
 
+import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.api.UserApi
 import dagger.Module
@@ -31,5 +32,8 @@ object ApisModule {
 
     @Provides
     fun provideBoardApi(retrofit: Retrofit): NotesApi = retrofit.create(NotesApi::class.java)
+
+    @Provides
+    fun provideFamilyApi(retrofit: Retrofit): FamilyApi = retrofit.create(FamilyApi::class.java)
 
 }

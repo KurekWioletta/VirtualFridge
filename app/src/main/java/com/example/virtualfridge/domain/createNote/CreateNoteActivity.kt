@@ -45,6 +45,8 @@ class CreateNoteActivity : BaseActivity() {
     }
 
     companion object {
+        const val RC_CREATE_NOTE = 1
+
         fun getIntent(activity: BaseActivity) = Intent(activity, CreateNoteActivity::class.java)
     }
 }

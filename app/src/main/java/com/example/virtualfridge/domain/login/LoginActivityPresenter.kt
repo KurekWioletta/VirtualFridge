@@ -24,7 +24,7 @@ class LoginActivityPresenter @Inject constructor(
     fun resume() = googleLoginManager.initializeSignInClient()
 
     fun checkForLoggedInUser() {
-        if (userDataStore.getUser() != null) {
+        if (userDataStore.user() != null) {
             view.openMainActivity()
         } else {
             if (googleLoginManager.userLoggedIn()) {

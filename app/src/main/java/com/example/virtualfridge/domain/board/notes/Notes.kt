@@ -23,9 +23,9 @@ class NotesViewHolder(
         item as NotesViewModel
 
         itemView.tvTitle.text = item.text
-        itemView.setOnLongClickListener {
+        itemView.setOnClickListener {
             onClick.invoke(item)
-            true
+//            true
         }
     }
 }

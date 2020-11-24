@@ -14,7 +14,7 @@ class BoardFragmentPresenter @Inject constructor(
 ) {
     fun init() =
         view.registerViewSubscription(
-            notesApi.notes(userDataStore.getLoggedInUser().id!!)
+            notesApi.notes(userDataStore.loggedInUser().id!!)
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }

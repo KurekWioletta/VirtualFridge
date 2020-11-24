@@ -1,6 +1,7 @@
 package com.example.virtualfridge.domain.board
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.base.BaseFragment
 import com.example.virtualfridge.domain.board.notes.NotesViewModel
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity
+import com.example.virtualfridge.domain.createNote.CreateNoteActivity.Companion.RC_CREATE_NOTE
 import com.example.virtualfridge.utils.ViewComponentsAdapter
 import com.example.virtualfridge.utils.ViewComponentsAdapter.Companion.NOTES
 import kotlinx.android.synthetic.main.fragment_board.*
@@ -43,7 +45,17 @@ class BoardFragment : BaseFragment() {
         rvNotes.adapter = adapter
 
         fabCreateNote.setOnClickListener {
-            startActivity(CreateNoteActivity.getIntent(activity as BaseActivity))
+            startActivityForResult(
+                CreateNoteActivity.getIntent(activity as BaseActivity),
+                RC_CREATE_NOTE
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_CREATE_NOTE) {
+            presenter.init()
         }
     }
 

@@ -45,7 +45,6 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
         presenter.resume()
     }
 
-    // TODO: Create automatic result handler with dagger
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_GOOGLE_LOGIN_REQUEST) {

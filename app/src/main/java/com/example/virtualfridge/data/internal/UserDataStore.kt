@@ -17,7 +17,7 @@ class UserDataStore constructor(
 ) {
     private val dataStore: DataStore<Preferences> = context.createDataStore(name = "user_data")
 
-    fun getUser(): User? {
+    fun user(): User? {
         var user: User?
         runBlocking {
             user =
@@ -39,7 +39,7 @@ class UserDataStore constructor(
         return user
     }
 
-    fun getLoggedInUser(): User = getUser()!!
+    fun loggedInUser(): User = user()!!
 
     fun cacheUser(user: User) = GlobalScope.launch {
         dataStore.edit { userData ->

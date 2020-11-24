@@ -2,10 +2,7 @@ package com.example.virtualfridge.data.api
 
 import io.reactivex.Observable
 import okhttp3.ResponseBody
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface NotesApi {
 
@@ -17,12 +14,12 @@ interface NotesApi {
         @Field("note") note: String
     ): Observable<ResponseBody>
 
-    @POST("notes/{userId}")
+    @GET("notes/{userId}")
     fun notes(
         @Path("userId") userId: String
     ): Observable<ResponseBody>
 
-    @POST("notes/delete/{id}")
+    @DELETE("notes/delete/{id}")
     fun deleteNote(
         @Path("id") noteId: String
     ): Observable<ResponseBody>

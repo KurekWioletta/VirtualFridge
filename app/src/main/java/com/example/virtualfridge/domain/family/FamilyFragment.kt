@@ -53,7 +53,7 @@ class FamilyFragment : BaseFragment() {
             presenter.inviteMemberClicked(etInviteEmail.text.toString())
         }
 
-        presenter.reload()
+        presenter.init()
     }
 
     fun showLeaveFamily(familyName: String) {
@@ -65,6 +65,11 @@ class FamilyFragment : BaseFragment() {
     fun showCreateFamily() {
         createFamilyContainer.visible()
         leaveFamilyContainer.gone()
+    }
+
+    fun invitationSent() {
+        etInviteEmail.text.clear()
+        // TODO: Show message
     }
 
     fun updateInvitations(items: List<InvitationViewModel>) = adapter.setItems(items)

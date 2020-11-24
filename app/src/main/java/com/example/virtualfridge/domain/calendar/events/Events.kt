@@ -28,9 +28,9 @@ class EventViewHolder(
         item as EventViewModel
 
         itemView.tvTitle.text = item.title
-        itemView.setOnLongClickListener {
+        itemView.setOnClickListener {
             onClick.invoke(item)
-            true
+//            true
         }
     }
 }

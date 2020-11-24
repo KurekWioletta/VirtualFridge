@@ -1,9 +1,11 @@
 package com.example.virtualfridge.domain.family
 
 import com.example.virtualfridge.R
+import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.family.FamilyFragment.ValidationViewModel
 import com.example.virtualfridge.domain.family.invitations.InvitationViewModel
+import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.isValidEmail
 import com.example.virtualfridge.utils.validate
 import com.example.virtualfridge.utils.validationResult
@@ -11,10 +13,12 @@ import javax.inject.Inject
 
 class FamilyFragmentPresenter @Inject constructor(
     private val view: FamilyFragment,
-    private val userDataStore: UserDataStore
+    private val familyApi: FamilyApi,
+    private val userDataStore: UserDataStore,
+    private val rxTransformerManager: RxTransformerManager
 ) {
 
-    fun reload() {
+    fun init() {
         userDataStore.familyName().also {
             if (it.isNullOrEmpty()) {
                 view.showCreateFamily()
@@ -22,22 +26,48 @@ class FamilyFragmentPresenter @Inject constructor(
                 view.showLeaveFamily(it)
             }
         }
-        // TODO: get invitations from backend
-        view.updateInvitations(
-            listOf(
-                InvitationViewModel("id1", "Mock1"),
-                InvitationViewModel("id2", "Mock2"),
-                InvitationViewModel("id3", "Mock3")
-            )
+
+        view.registerViewSubscription(
+            familyApi.invitations(userDataStore.loggedInUser().id!!)
+                .compose { rxTransformerManager.applyIOScheduler(it) }
+                .doOnSubscribe { view.showLoading() }
+                .doOnTerminate { view.hideLoading() }
+                .subscribe({
+                    // TODO: map from response
+                    view.updateInvitations(
+                        listOf(
+                            InvitationViewModel("id1", "Mock1"),
+                            InvitationViewModel("id2", "Mock2"),
+                            InvitationViewModel("id3", "Mock3")
+                        )
+                    )
+                }, {
+                    // TODO: handle error message
+                    view.showAlert("ERROR")
+                    view.updateInvitations(
+                        listOf(
+                            InvitationViewModel("id1", "Mock1"),
+                            InvitationViewModel("id2", "Mock2"),
+                            InvitationViewModel("id3", "Mock3")
+                        )
+                    )
+                })
         )
     }
 
-    fun leaveFamilyClicked() {
-        // TODO: call leave family
-        // TODO: refresh view
-        userDataStore.removeFromFamily()
-        reload()
-    }
+    fun leaveFamilyClicked() = view.registerViewSubscription(
+        familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
+            .compose { rxTransformerManager.applyIOScheduler(it) }
+            .doOnSubscribe { view.showLoading() }
+            .doOnTerminate { view.hideLoading() }
+            .subscribe({
+                userDataStore.removeFromFamily()
+                init()
+            }, {
+                // TODO: handle error message
+                view.showAlert("ERROR")
+            })
+    )
 
     fun createFamilyClicked(familyName: String) {
         val validationViewModel = ValidationViewModel(
@@ -47,10 +77,19 @@ class FamilyFragmentPresenter @Inject constructor(
 
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
-            // TODO: Create family
-            // TODO: use familyName from response
-            userDataStore.addToFamily(familyName)
-            reload()
+            view.registerViewSubscription(
+                familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
+                    .doOnSubscribe { view.showLoading() }
+                    .doOnTerminate { view.hideLoading() }
+                    .subscribe({
+                        userDataStore.addToFamily(familyName)
+                        init()
+                    }, {
+                        // TODO: handle error message
+                        view.showAlert("ERROR")
+                    })
+            )
         }
     }
 
@@ -62,22 +101,52 @@ class FamilyFragmentPresenter @Inject constructor(
 
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
-            // TODO: Invite member
+            view.registerViewSubscription(
+                familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
+                    .doOnSubscribe { view.showLoading() }
+                    .doOnTerminate { view.hideLoading() }
+                    .subscribe({
+                        // TODO: show message
+                    }, {
+                        // TODO: handle error message
+                        view.showAlert("ERROR")
+                    })
+            )
         }
     }
 
     fun acceptInvitationClicked(invitationId: String) {
-        userDataStore.familyName().also {
-            if (it.isNullOrEmpty()) {
-                // TODO: accept invitation
-                reload()
-            } else {
-                view.showAlert(view.getString(R.string.family_leave_family_alert))
-            }
+        if (userDataStore.familyName().isNullOrEmpty()) {
+            view.registerViewSubscription(
+                familyApi.acceptInvitation(invitationId)
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
+                    .doOnSubscribe { view.showLoading() }
+                    .doOnTerminate { view.hideLoading() }
+                    .subscribe({
+                        // TODO: use name from response
+                        userDataStore.addToFamily(userDataStore.familyName()!!)
+                        init()
+                    }, {
+                        // TODO: handle error message
+                        view.showAlert("ERROR")
+                    })
+            )
+        } else {
+            view.showAlert(view.getString(R.string.family_leave_family_alert))
         }
     }
 
-    fun declineInvitationClicked(invitationId: String) {
-        reload()
-    }
+    fun declineInvitationClicked(invitationId: String) = view.registerViewSubscription(
+        familyApi.declineInvitation(invitationId)
+            .compose { rxTransformerManager.applyIOScheduler(it) }
+            .doOnSubscribe { view.showLoading() }
+            .doOnTerminate { view.hideLoading() }
+            .subscribe({
+                init()
+            }, {
+                // TODO: handle error message
+                view.showAlert("ERROR")
+            })
+    )
 }
