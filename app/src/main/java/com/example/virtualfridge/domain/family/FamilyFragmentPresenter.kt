@@ -78,7 +78,7 @@ class FamilyFragmentPresenter @Inject constructor(
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
             view.registerViewSubscription(
-                familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
+                familyApi.createFamily(userDataStore.loggedInUser().id!!, familyName)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }
@@ -102,7 +102,7 @@ class FamilyFragmentPresenter @Inject constructor(
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
             view.registerViewSubscription(
-                familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
+                familyApi.inviteMember(userDataStore.loggedInUser().id!!, email)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }

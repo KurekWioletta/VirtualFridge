@@ -6,6 +6,11 @@ import retrofit2.http.*
 
 interface FamilyApi {
 
+    @GET("family/members/{userId}")
+    fun familyMembers(
+        @Path("userId") userId: String
+    ): Observable<ResponseBody>
+
     @GET("family/invitations/{userId}")
     fun invitations(
         @Path("userId") userId: String

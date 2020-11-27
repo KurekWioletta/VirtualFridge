@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface NotesApi {
 
     @FormUrlEncoded
-    @POST("notes/add")
+    @POST("notes/create")
     fun createNote(
         @Field("userId") userId: String,
         @Field("familyMemberId") familyMemberId: String,
@@ -19,9 +19,9 @@ interface NotesApi {
         @Path("userId") userId: String
     ): Observable<ResponseBody>
 
-    @DELETE("notes/delete/{id}")
+    @DELETE("notes/delete/{noteId}")
     fun deleteNote(
-        @Path("id") noteId: String
+        @Path("noteId") noteId: String
     ): Observable<ResponseBody>
 
 }

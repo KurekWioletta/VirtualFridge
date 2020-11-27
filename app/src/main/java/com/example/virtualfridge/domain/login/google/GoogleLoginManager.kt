@@ -56,6 +56,7 @@ class GoogleLoginManager @Inject constructor(
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { activity.showLoading() }
                     .doOnTerminate { activity.hideLoading() }
+                    .doOnEach {}
                     .doOnError { logout() }
                     .subscribe({
                         // TODO: in response get info if user confirmed

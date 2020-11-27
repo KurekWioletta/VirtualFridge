@@ -1,5 +1,6 @@
 package com.example.virtualfridge.di
 
+import com.example.virtualfridge.data.api.EventsApi
 import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.api.UserApi
@@ -35,5 +36,8 @@ object ApisModule {
 
     @Provides
     fun provideFamilyApi(retrofit: Retrofit): FamilyApi = retrofit.create(FamilyApi::class.java)
+
+    @Provides
+    fun provideEventsApi(retrofit: Retrofit): EventsApi = retrofit.create(EventsApi::class.java)
 
 }

@@ -55,7 +55,7 @@ class BoardFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_CREATE_NOTE) {
-            presenter.init()
+            presenter.refreshBoard()
         }
     }
 

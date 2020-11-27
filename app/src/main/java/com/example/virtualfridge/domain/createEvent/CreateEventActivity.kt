@@ -39,6 +39,8 @@ class CreateEventActivity : BaseActivity() {
     }
 
     companion object {
+        const val RC_CREATE_EVENT = 1
+
         fun getIntent(activity: BaseActivity) = Intent(activity, CreateEventActivity::class.java)
     }
 }

@@ -25,7 +25,6 @@ class NotesViewHolder(
         itemView.tvTitle.text = item.text
         itemView.setOnClickListener {
             onClick.invoke(item)
-//            true
         }
     }
 }

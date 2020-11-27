@@ -11,7 +11,7 @@ import java.time.LocalDate
 data class EventViewModel(
     val id: String,
     val title: String,
-    val text: String,
+    val description: String,
     val place: String,
     val startDate: LocalDate,
     val endDate: LocalDate
@@ -30,7 +30,6 @@ class EventViewHolder(
         itemView.tvTitle.text = item.title
         itemView.setOnClickListener {
             onClick.invoke(item)
-//            true
         }
     }
 }

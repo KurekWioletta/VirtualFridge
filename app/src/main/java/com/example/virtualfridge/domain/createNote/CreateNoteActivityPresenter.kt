@@ -1,6 +1,7 @@
 package com.example.virtualfridge.domain.createNote
 
 import com.example.virtualfridge.R
+import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.calendar.CalendarFragment
@@ -14,17 +15,33 @@ import javax.inject.Inject
 class CreateNoteActivityPresenter @Inject constructor(
     private val view: CreateNoteActivity,
     private val notesApi: NotesApi,
+    private val familyApi: FamilyApi,
     private val rxTransformerManager: RxTransformerManager,
     private val userDataStore: UserDataStore
 ) {
-    fun init() {
-        view.setUpSpinner(
-            listOf(
-                CalendarFragment.FamilyMember("1", "Jan", "Kowalski"),
-                CalendarFragment.FamilyMember("2", "Ania", "Kowalska")
-            )
+    fun init() =
+        view.registerViewSubscription(
+            familyApi.familyMembers(userDataStore.loggedInUser().id!!)
+                .compose { rxTransformerManager.applyIOScheduler(it) }
+                .doOnSubscribe { view.showLoading() }
+                .doOnTerminate { view.hideLoading() }
+                .subscribe({
+                    view.setUpSpinner(
+                        listOf(
+                            CalendarFragment.FamilyMember("1", "Jan", "Kowalski"),
+                            CalendarFragment.FamilyMember("2", "Ania", "Kowalska")
+                        )
+                    )
+                }, {
+                    view.showAlert("ERROR")
+                    view.setUpSpinner(
+                        listOf(
+                            CalendarFragment.FamilyMember("1", "Jan", "Kowalski"),
+                            CalendarFragment.FamilyMember("2", "Ania", "Kowalska")
+                        )
+                    )
+                })
         )
-    }
 
     fun createNoteClicked(familyMemberId: String, note: String) {
         val validationViewModel = ValidationViewModel(
@@ -44,7 +61,6 @@ class CreateNoteActivityPresenter @Inject constructor(
                     }, {
                         view.setResult(RC_CREATE_NOTE)
                         view.finish()
-                        view.showAlert("ERROR")
                     })
             )
         }

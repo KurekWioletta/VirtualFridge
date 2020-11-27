@@ -1,6 +1,7 @@
 package com.example.virtualfridge.domain.calendar
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.base.BaseFragment
 import com.example.virtualfridge.domain.calendar.events.EventViewModel
 import com.example.virtualfridge.domain.createEvent.CreateEventActivity
+import com.example.virtualfridge.domain.createEvent.CreateEventActivity.Companion.RC_CREATE_EVENT
 import com.example.virtualfridge.utils.ViewComponentsAdapter
 import com.example.virtualfridge.utils.ViewComponentsAdapter.Companion.EVENTS
 import com.example.virtualfridge.utils.invisible
@@ -41,7 +43,9 @@ class CalendarFragment : BaseFragment() {
     @Inject
     lateinit var presenter: CalendarFragmentPresenter
 
-    private lateinit var adapter: ViewComponentsAdapter<EventViewModel>
+    private lateinit var eventsAdapter: ViewComponentsAdapter<EventViewModel>
+    private lateinit var familyMembersAdapter: ArrayAdapter<FamilyMember>
+
     private val events = mutableMapOf<LocalDate, Boolean>()
 
     val currentDay: LocalDate = LocalDate.now()
@@ -52,10 +56,11 @@ class CalendarFragment : BaseFragment() {
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = ViewComponentsAdapter(EVENTS, {
-            showSelectEventOptionDialog()
-            presenter.eventClicked(it)
+        eventsAdapter = ViewComponentsAdapter(EVENTS, {
+            showSelectEventOptionDialog(it)
         })
+        familyMembersAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item)
+
         return inflater.inflate(R.layout.fragment_calendar, parent, false)
     }
 
@@ -65,7 +70,21 @@ class CalendarFragment : BaseFragment() {
         presenter.init()
 
         rvEvents.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rvEvents.adapter = adapter
+        rvEvents.adapter = eventsAdapter
+
+        spFamilyMembers.adapter = familyMembersAdapter
+        spFamilyMembers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                presenter.triggerRefresh(currentFamilyMemberId())
+            }
+        }
 
         ivNextMonth.setOnClickListener {
             calendarView.findFirstVisibleMonth()?.let {
@@ -87,13 +106,25 @@ class CalendarFragment : BaseFragment() {
                 selectDate(currentDay)
             }
         }
+        updateFamilyMembers(
+            listOf(
+                FamilyMember("1", "Jan", "Kowalski"),
+                FamilyMember("2", "Ania", "Kowalska")
+            )
+        )
     }
 
-    fun updateDate(date: LocalDate, formattedDate: String, events: List<EventViewModel>) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_CREATE_EVENT) {
+            presenter.triggerRefresh(currentFamilyMemberId())
+        }
+    }
+
+    fun updateDate(date: LocalDate, formattedDate: String) {
         selectedDate?.let { calendarView.notifyDateChanged(it) }
         selectedDate = date
         calendarView.notifyDateChanged(date)
-        adapter.setItems(events)
         tvSelectedDay.text = formattedDate
     }
 
@@ -101,7 +132,9 @@ class CalendarFragment : BaseFragment() {
         tvMonth.text = formattedDate
     }
 
-    fun updateEvents(events: Map<LocalDate, Boolean>) {
+    fun updateEventsList(events: List<EventViewModel>) = eventsAdapter.setItems(events)
+
+    fun updateEventsOnCalendar(events: Map<LocalDate, Boolean>) {
         this.events.clear()
         this.events.putAll(events)
         events.keys.forEach {
@@ -111,31 +144,13 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    fun openNoteDetailsActivity() {
+    fun updateFamilyMembers(members: List<FamilyMember>) = familyMembersAdapter.addAll(members)
 
-    }
-
-    fun setUpSpinner(members: List<FamilyMember>) {
-        spFamilyMembers.adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, members)
-
-        spFamilyMembers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                presenter.familyMemberSelected((parent.getItemAtPosition(position) as FamilyMember).id)
-            }
-        }
-    }
+    fun currentFamilyMemberId(): String = (spFamilyMembers.selectedItem as FamilyMember).id
 
     private fun selectDate(date: LocalDate) = presenter.dateSelected(date)
 
-    private fun showSelectEventOptionDialog() =
+    private fun showSelectEventOptionDialog(event: EventViewModel) =
         AlertDialog.Builder(context)
             .setItems(
                 arrayOf(
@@ -144,7 +159,11 @@ class CalendarFragment : BaseFragment() {
                 )
             ) { _, which ->
                 when (which) {
-                    0, 1, 2, 3, 4 -> {
+                    0 -> {
+                        presenter.editEvent(event)
+                    }
+                    1 -> {
+                        presenter.deleteEvent(event.id)
                     }
                 }
             }
