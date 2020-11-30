@@ -3,13 +3,13 @@ package com.example.virtualfridge.domain.calendar
 import com.example.virtualfridge.data.api.EventsApi
 import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.internal.UserDataStore
-import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMember
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel.Companion.fromResponse
 import com.example.virtualfridge.domain.calendar.events.EventViewModel
 import com.example.virtualfridge.utils.RxTransformerManager
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject
-import okhttp3.ResponseBody
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -30,8 +30,9 @@ class CalendarFragmentPresenter @Inject constructor(
 
     fun init() = view.registerViewSubscription(
         Observable.combineLatest(
-            familyApi.familyMembers(userDataStore.loggedInUser().id!!),
-            triggerRefresh.map { userId ->
+            familyApi.familyMembers(userDataStore.loggedInUser().id!!)
+                .map { fromResponse(it) },
+            triggerRefresh.flatMap { userId ->
                 eventsApi.events(
                     if (userId.isEmpty()) {
                         userDataStore.loggedInUser().id!!
@@ -39,19 +40,14 @@ class CalendarFragmentPresenter @Inject constructor(
                         userId
                     }
                 )
-            },
-            BiFunction { family: ResponseBody, events: Observable<ResponseBody> -> family to events }
+            }.map { EventViewModel.fromResponse(it) },
+            BiFunction { family: List<FamilyMemberViewModel>, events: List<EventViewModel> -> family to events }
         )
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
             .doOnTerminate { view.hideLoading() }
-            .subscribe({
-                view.updateFamilyMembers(
-                    listOf(
-                        FamilyMember("1", "Jan", "Kowalski"),
-                        FamilyMember("2", "Ania", "Kowalska")
-                    )
-                )
+            .subscribe({ (family, events) ->
+                view.updateFamilyMembers(family)
                 view.updateEventsOnCalendar(
                     mapOf(
                         view.currentDay.plusDays(1) to true,
@@ -59,11 +55,11 @@ class CalendarFragmentPresenter @Inject constructor(
                     )
                 )
             }, {
-//                view.showAlert("ERROR")
+                view.showAlert("ERROR")
                 view.updateFamilyMembers(
                     listOf(
-                        FamilyMember("1", "Jan", "Kowalski"),
-                        FamilyMember("2", "Ania", "Kowalska")
+                        FamilyMemberViewModel("1", "Jan", "Kowalski"),
+                        FamilyMemberViewModel("2", "Ania", "Kowalska")
                     )
                 )
                 view.updateEventsOnCalendar(

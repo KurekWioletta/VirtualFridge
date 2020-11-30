@@ -5,6 +5,7 @@ import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.calendar.CalendarFragment
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel.Companion.fromResponse
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity.Companion.RC_CREATE_NOTE
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity.ValidationViewModel
 import com.example.virtualfridge.utils.RxTransformerManager
@@ -22,22 +23,18 @@ class CreateNoteActivityPresenter @Inject constructor(
     fun init() =
         view.registerViewSubscription(
             familyApi.familyMembers(userDataStore.loggedInUser().id!!)
+                .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .subscribe({
-                    view.setUpSpinner(
-                        listOf(
-                            CalendarFragment.FamilyMember("1", "Jan", "Kowalski"),
-                            CalendarFragment.FamilyMember("2", "Ania", "Kowalska")
-                        )
-                    )
+                .subscribe({ familyMembers ->
+                    view.setUpSpinner(familyMembers)
                 }, {
                     view.showAlert("ERROR")
                     view.setUpSpinner(
                         listOf(
-                            CalendarFragment.FamilyMember("1", "Jan", "Kowalski"),
-                            CalendarFragment.FamilyMember("2", "Ania", "Kowalska")
+                            CalendarFragment.FamilyMemberViewModel("1", "Jan", "Kowalski"),
+                            CalendarFragment.FamilyMemberViewModel("2", "Ania", "Kowalska")
                         )
                     )
                 })

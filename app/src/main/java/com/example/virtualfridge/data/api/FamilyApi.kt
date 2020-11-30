@@ -1,5 +1,7 @@
 package com.example.virtualfridge.data.api
 
+import com.example.virtualfridge.data.api.models.FamilyMemberResponse
+import com.example.virtualfridge.data.api.models.InvitationResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -9,17 +11,17 @@ interface FamilyApi {
     @GET("family/members/{userId}")
     fun familyMembers(
         @Path("userId") userId: String
-    ): Observable<ResponseBody>
+    ): Observable<List<FamilyMemberResponse>>
 
     @GET("family/invitations/{userId}")
     fun invitations(
         @Path("userId") userId: String
-    ): Observable<ResponseBody>
+    ): Observable<List<InvitationResponse>>
 
     @PUT("family/invitations/accept")
     fun acceptInvitation(
         @Query("invitationId") invitationId: String
-    ): Observable<ResponseBody>
+    ): Observable<String>
 
     @PUT("family/invitations/decline")
     fun declineInvitation(
@@ -35,7 +37,7 @@ interface FamilyApi {
     fun createFamily(
         @Query("userId") userId: String,
         @Query("familyName") familyName: String
-    ): Observable<ResponseBody>
+    ): Observable<String>
 
     @POST("family/invite")
     fun inviteMember(

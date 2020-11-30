@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import com.example.virtualfridge.R
 import com.example.virtualfridge.domain.base.BaseActivity
-import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMember
+import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel
 import com.example.virtualfridge.utils.BaseValidationViewModel
 import kotlinx.android.synthetic.main.activity_create_note.*
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class CreateNoteActivity : BaseActivity() {
 
         btnCreateNote.setOnClickListener {
             presenter.createNoteClicked(
-                (spFamilyMembers.selectedItem as FamilyMember).id,
+                (spFamilyMembers.selectedItem as FamilyMemberViewModel).id,
                 etNote.text.toString()
             )
         }
@@ -29,7 +29,7 @@ class CreateNoteActivity : BaseActivity() {
         presenter.init()
     }
 
-    fun setUpSpinner(members: List<FamilyMember>) {
+    fun setUpSpinner(members: List<FamilyMemberViewModel>) {
         spFamilyMembers.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, members)
     }

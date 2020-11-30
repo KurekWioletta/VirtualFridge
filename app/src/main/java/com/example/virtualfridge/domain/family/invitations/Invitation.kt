@@ -3,6 +3,7 @@ package com.example.virtualfridge.domain.family.invitations
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.virtualfridge.R
+import com.example.virtualfridge.data.api.models.InvitationResponse
 import com.example.virtualfridge.utils.BaseViewComponentsViewHolder
 import com.example.virtualfridge.utils.BaseViewComponentsViewModel
 import kotlinx.android.synthetic.main.family_item_invitation.view.*
@@ -10,7 +11,15 @@ import kotlinx.android.synthetic.main.family_item_invitation.view.*
 data class InvitationViewModel(
     val invitationId: String,
     val familyName: String
-) : BaseViewComponentsViewModel()
+) : BaseViewComponentsViewModel() {
+
+    companion object {
+        fun fromResponse(response: List<InvitationResponse>) = response.map {
+            InvitationViewModel(it.id, it.familyName)
+        }
+    }
+
+}
 
 class InvitationViewHolder(
     private val acceptInvitationClick: ((String) -> Unit),

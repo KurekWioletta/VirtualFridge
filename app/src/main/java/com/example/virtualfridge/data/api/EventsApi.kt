@@ -1,5 +1,6 @@
 package com.example.virtualfridge.data.api
 
+import com.example.virtualfridge.data.api.models.EventResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -31,7 +32,7 @@ interface EventsApi {
     @GET("events/{userId}")
     fun events(
         @Path("userId") userId: String
-    ): Observable<ResponseBody>
+    ): Observable<List<EventResponse>>
 
     @DELETE("events/delete/{eventId}")
     fun deleteEvent(

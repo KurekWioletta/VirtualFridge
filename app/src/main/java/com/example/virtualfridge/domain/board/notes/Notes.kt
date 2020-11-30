@@ -3,6 +3,7 @@ package com.example.virtualfridge.domain.board.notes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.virtualfridge.R
+import com.example.virtualfridge.data.api.models.NoteResponse
 import com.example.virtualfridge.utils.BaseViewComponentsViewHolder
 import com.example.virtualfridge.utils.BaseViewComponentsViewModel
 import kotlinx.android.synthetic.main.calendar_item_event.view.*
@@ -10,7 +11,14 @@ import kotlinx.android.synthetic.main.calendar_item_event.view.*
 data class NotesViewModel(
     val id: String,
     val text: String
-) : BaseViewComponentsViewModel()
+) : BaseViewComponentsViewModel() {
+
+    companion object {
+        fun fromResponse(response: List<NoteResponse>) = response.map {
+            NotesViewModel(it.id, "${it.text} - ${it.authorFirstName} ${it.authorLastName}")
+        }
+    }
+}
 
 class NotesViewHolder(
     private val onClick: ((NotesViewModel) -> Unit),

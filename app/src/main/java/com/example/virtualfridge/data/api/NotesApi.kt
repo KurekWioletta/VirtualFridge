@@ -1,5 +1,6 @@
 package com.example.virtualfridge.data.api
 
+import com.example.virtualfridge.data.api.models.NoteResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -17,7 +18,7 @@ interface NotesApi {
     @GET("notes/{userId}")
     fun notes(
         @Path("userId") userId: String
-    ): Observable<ResponseBody>
+    ): Observable<List<NoteResponse>>
 
     @DELETE("notes/delete/{noteId}")
     fun deleteNote(

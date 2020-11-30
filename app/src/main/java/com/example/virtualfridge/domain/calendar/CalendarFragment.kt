@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualfridge.R
+import com.example.virtualfridge.data.api.models.FamilyMemberResponse
 import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.base.BaseFragment
 import com.example.virtualfridge.domain.calendar.events.EventViewModel
@@ -44,7 +45,7 @@ class CalendarFragment : BaseFragment() {
     lateinit var presenter: CalendarFragmentPresenter
 
     private lateinit var eventsAdapter: ViewComponentsAdapter<EventViewModel>
-    private lateinit var familyMembersAdapter: ArrayAdapter<FamilyMember>
+    private lateinit var familyMembersAdapterViewModel: ArrayAdapter<FamilyMemberViewModel>
 
     private val events = mutableMapOf<LocalDate, Boolean>()
 
@@ -59,7 +60,8 @@ class CalendarFragment : BaseFragment() {
         eventsAdapter = ViewComponentsAdapter(EVENTS, {
             showSelectEventOptionDialog(it)
         })
-        familyMembersAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item)
+        familyMembersAdapterViewModel =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item)
 
         return inflater.inflate(R.layout.fragment_calendar, parent, false)
     }
@@ -72,7 +74,7 @@ class CalendarFragment : BaseFragment() {
         rvEvents.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rvEvents.adapter = eventsAdapter
 
-        spFamilyMembers.adapter = familyMembersAdapter
+        spFamilyMembers.adapter = familyMembersAdapterViewModel
         spFamilyMembers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
@@ -108,8 +110,8 @@ class CalendarFragment : BaseFragment() {
         }
         updateFamilyMembers(
             listOf(
-                FamilyMember("1", "Jan", "Kowalski"),
-                FamilyMember("2", "Ania", "Kowalska")
+                FamilyMemberViewModel("1", "Jan", "Kowalski"),
+                FamilyMemberViewModel("2", "Ania", "Kowalska")
             )
         )
     }
@@ -144,9 +146,10 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    fun updateFamilyMembers(members: List<FamilyMember>) = familyMembersAdapter.addAll(members)
+    fun updateFamilyMembers(members: List<FamilyMemberViewModel>) =
+        familyMembersAdapterViewModel.addAll(members)
 
-    fun currentFamilyMemberId(): String = (spFamilyMembers.selectedItem as FamilyMember).id
+    fun currentFamilyMemberId(): String = (spFamilyMembers.selectedItem as FamilyMemberViewModel).id
 
     private fun selectDate(date: LocalDate) = presenter.dateSelected(date)
 
@@ -240,11 +243,17 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    data class FamilyMember(
+    data class FamilyMemberViewModel(
         val id: String,
-        val name: String,
-        val surname: String
+        val firstName: String,
+        val lastName: String
     ) {
-        override fun toString(): String = "$name $surname"
+        override fun toString(): String = "$firstName $lastName"
+
+        companion object {
+            fun fromResponse(response: List<FamilyMemberResponse>) = response.map {
+                FamilyMemberViewModel(it.id, it.firstName, it.lastName)
+            }
+        }
     }
 }

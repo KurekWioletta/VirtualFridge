@@ -5,6 +5,7 @@ import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.family.FamilyFragment.ValidationViewModel
 import com.example.virtualfridge.domain.family.invitations.InvitationViewModel
+import com.example.virtualfridge.domain.family.invitations.InvitationViewModel.Companion.fromResponse
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.isValidEmail
 import com.example.virtualfridge.utils.validate
@@ -29,19 +30,11 @@ class FamilyFragmentPresenter @Inject constructor(
 
         view.registerViewSubscription(
             familyApi.invitations(userDataStore.loggedInUser().id!!)
+                .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .subscribe({
-                    // TODO: map from response
-                    view.updateInvitations(
-                        listOf(
-                            InvitationViewModel("id1", "Mock1"),
-                            InvitationViewModel("id2", "Mock2"),
-                            InvitationViewModel("id3", "Mock3")
-                        )
-                    )
-                }, {
+                .subscribe({ view.updateInvitations(it) }, {
                     // TODO: handle error message
                     view.showAlert("ERROR")
                     view.updateInvitations(
@@ -82,8 +75,8 @@ class FamilyFragmentPresenter @Inject constructor(
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }
-                    .subscribe({
-                        userDataStore.addToFamily(familyName)
+                    .subscribe({ fName ->
+                        userDataStore.addToFamily(fName)
                         init()
                     }, {
                         // TODO: handle error message
@@ -123,9 +116,9 @@ class FamilyFragmentPresenter @Inject constructor(
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }
-                    .subscribe({
-                        // TODO: use name from response
-                        userDataStore.addToFamily(userDataStore.familyName()!!)
+                    .subscribe({ familyName ->
+                        // TODO: refresh
+                        userDataStore.addToFamily(familyName)
                         init()
                     }, {
                         // TODO: handle error message
@@ -143,6 +136,7 @@ class FamilyFragmentPresenter @Inject constructor(
             .doOnSubscribe { view.showLoading() }
             .doOnTerminate { view.hideLoading() }
             .subscribe({
+                // TODO: refresh
                 init()
             }, {
                 // TODO: handle error message
