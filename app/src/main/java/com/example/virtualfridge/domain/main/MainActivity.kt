@@ -78,7 +78,6 @@ class MainActivity : BaseActivity() {
             if (activeFragment != null) {
                 transaction.hide(activeFragment as Fragment)
             }
-            // TODO: set animation for transaction
             transaction.show(selectedFragment).commit()
             activeFragment = selectedFragment
         }

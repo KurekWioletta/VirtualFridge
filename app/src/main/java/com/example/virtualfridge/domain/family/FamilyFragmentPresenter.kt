@@ -33,7 +33,7 @@ class FamilyFragmentPresenter @Inject constructor(
                 .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
-                .doOnTerminate { view.hideLoading() }
+                .doOnEach { view.hideLoading() }
                 .subscribe({ view.updateInvitations(it) }, {
                     // TODO: handle error message
                     view.showAlert("ERROR")
@@ -52,7 +52,7 @@ class FamilyFragmentPresenter @Inject constructor(
         familyApi.leaveFamily(userDataStore.loggedInUser().id!!)
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
-            .doOnTerminate { view.hideLoading() }
+            .doOnEach { view.hideLoading() }
             .subscribe({
                 userDataStore.removeFromFamily()
                 init()
@@ -74,7 +74,7 @@ class FamilyFragmentPresenter @Inject constructor(
                 familyApi.createFamily(userDataStore.loggedInUser().id!!, familyName)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
-                    .doOnTerminate { view.hideLoading() }
+                    .doOnEach { view.hideLoading() }
                     .subscribe({ fName ->
                         userDataStore.addToFamily(fName)
                         init()
@@ -98,7 +98,7 @@ class FamilyFragmentPresenter @Inject constructor(
                 familyApi.inviteMember(userDataStore.loggedInUser().id!!, email)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
-                    .doOnTerminate { view.hideLoading() }
+                    .doOnEach { view.hideLoading() }
                     .subscribe({
                         // TODO: show message
                         view.showAlert(view.getString(R.string.family_family_member_invited))
@@ -116,7 +116,7 @@ class FamilyFragmentPresenter @Inject constructor(
                 familyApi.acceptInvitation(invitationId)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
-                    .doOnTerminate { view.hideLoading() }
+                    .doOnEach { view.hideLoading() }
                     .subscribe({ familyName ->
                         // TODO: refresh
                         userDataStore.addToFamily(familyName)
@@ -135,7 +135,7 @@ class FamilyFragmentPresenter @Inject constructor(
         familyApi.declineInvitation(invitationId)
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
-            .doOnTerminate { view.hideLoading() }
+            .doOnEach { view.hideLoading() }
             .subscribe({
                 // TODO: refresh
                 init()

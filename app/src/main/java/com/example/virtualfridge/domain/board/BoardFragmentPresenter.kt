@@ -2,7 +2,6 @@ package com.example.virtualfridge.domain.board
 
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.internal.UserDataStore
-import com.example.virtualfridge.domain.board.notes.NotesViewModel
 import com.example.virtualfridge.domain.board.notes.NotesViewModel.Companion.fromResponse
 import com.example.virtualfridge.utils.RxTransformerManager
 import io.reactivex.subjects.BehaviorSubject
@@ -20,35 +19,15 @@ class BoardFragmentPresenter @Inject constructor(
     fun init() {
         view.registerViewSubscription(triggerRefresh.flatMap {
             notesApi.notes(userDataStore.loggedInUser().id!!)
+                .compose { rxTransformerManager.applyIOScheduler(it) }
         }
             .map { fromResponse(it) }
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
-            .doOnTerminate { view.hideLoading() }
+            .doOnEach { view.hideLoading() }
             .subscribe({ view.updateNotes(it) }, {
                 // TODO: handle error message
                 view.showAlert("ERROR")
-                // TODO: remove
-                view.updateNotes(
-                    listOf(
-                        NotesViewModel(
-                            "111",
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        ),
-                        NotesViewModel(
-                            "111",
-                            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        ),
-                        NotesViewModel(
-                            "111",
-                            "Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        ),
-                        NotesViewModel(
-                            "111",
-                            "Ggiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        )
-                    )
-                )
             })
         )
     }
@@ -60,11 +39,10 @@ class BoardFragmentPresenter @Inject constructor(
             notesApi.deleteNote(noteId)
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
-                .doOnTerminate { view.hideLoading() }
+                .doOnEach { view.hideLoading() }
                 .subscribe({
                     refreshBoard()
                 }, {
-                    refreshBoard()
                     // TODO: handle error message
                     view.showAlert("ERROR")
                 })
