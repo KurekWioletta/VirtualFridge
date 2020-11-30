@@ -23,11 +23,6 @@ interface FamilyApi {
         @Query("invitationId") invitationId: String
     ): Observable<String>
 
-    @PUT("family/invitations/decline")
-    fun declineInvitation(
-        @Query("invitationId") invitationId: String
-    ): Observable<ResponseBody>
-
     @PUT("family/leave")
     fun leaveFamily(
         @Query("userId") userId: String
@@ -45,4 +40,8 @@ interface FamilyApi {
         @Query("memberEmail") memberEmail: String
     ): Observable<ResponseBody>
 
+    @DELETE("family/invitations/decline")
+    fun declineInvitation(
+        @Query("invitationId") invitationId: String
+    ): Observable<ResponseBody>
 }

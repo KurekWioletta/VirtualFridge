@@ -36,6 +36,7 @@
     <string name="family_invitations_accept_btn">Accept</string>
     <string name="family_invitations_decline_btn">Decline</string>
     <string name="family_leave_family_alert">You have to leave family before accepting invitation</string>
+    <string name="family_family_member_invited">Family member invited</string>
 
     <string name="create_event_title">Title</string>
     <string name="create_event_description">Description…</string>

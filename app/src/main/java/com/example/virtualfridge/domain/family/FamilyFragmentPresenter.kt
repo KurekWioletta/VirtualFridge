@@ -101,6 +101,7 @@ class FamilyFragmentPresenter @Inject constructor(
                     .doOnTerminate { view.hideLoading() }
                     .subscribe({
                         // TODO: show message
+                        view.showAlert(view.getString(R.string.family_family_member_invited))
                     }, {
                         // TODO: handle error message
                         view.showAlert("ERROR")
