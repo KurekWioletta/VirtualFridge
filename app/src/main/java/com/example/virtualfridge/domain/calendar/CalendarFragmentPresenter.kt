@@ -40,12 +40,14 @@ class CalendarFragmentPresenter @Inject constructor(
                         userId
                     }
                 )
-            }.map { EventViewModel.fromResponse(it) },
+                    .map { EventViewModel.fromResponse(it) }
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
+            },
             BiFunction { family: List<FamilyMemberViewModel>, events: List<EventViewModel> -> family to events }
         )
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
-            .doOnTerminate { view.hideLoading() }
+            .doOnEach { view.hideLoading() }
             .subscribe({ (family, events) ->
                 view.updateFamilyMembers(family)
                 view.updateEventsOnCalendar(
@@ -56,18 +58,6 @@ class CalendarFragmentPresenter @Inject constructor(
                 )
             }, {
                 view.showAlert("ERROR")
-                view.updateFamilyMembers(
-                    listOf(
-                        FamilyMemberViewModel("1", "Jan", "Kowalski"),
-                        FamilyMemberViewModel("2", "Ania", "Kowalska")
-                    )
-                )
-                view.updateEventsOnCalendar(
-                    mapOf(
-                        view.currentDay.plusDays(1) to true,
-                        view.currentDay.plusDays(2) to true
-                    )
-                )
             })
     )
 
@@ -89,16 +79,16 @@ class CalendarFragmentPresenter @Inject constructor(
                         "titleNote2",
                         "contentNote2",
                         "placeNote2",
-                        view.currentDay,
-                        view.currentDay
+                        view.currentDay.toString(),
+                        view.currentDay.toString()
                     ),
                     EventViewModel(
                         "",
                         "titleNote1",
                         "contentNote1",
                         "placeNote1",
-                        view.currentDay,
-                        view.currentDay
+                        view.currentDay.toString(),
+                        view.currentDay.toString()
                     )
                 )
             )

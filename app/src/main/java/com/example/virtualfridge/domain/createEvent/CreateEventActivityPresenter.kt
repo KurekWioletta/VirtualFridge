@@ -39,13 +39,12 @@ class CreateEventActivityPresenter @Inject constructor(
             )
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
-                .doOnTerminate { view.hideLoading() }
+                .doOnEach { view.hideLoading() }
                 .subscribe({
                     view.setResult(RC_CREATE_EVENT)
                     view.finish()
                 }, {
-                    view.setResult(RC_CREATE_EVENT)
-                    view.finish()
+                    view.showAlert("ERROR")
                 })
             )
         }

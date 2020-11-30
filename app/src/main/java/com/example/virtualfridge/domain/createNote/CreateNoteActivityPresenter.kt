@@ -26,7 +26,7 @@ class CreateNoteActivityPresenter @Inject constructor(
                 .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
-                .doOnTerminate { view.hideLoading() }
+                .doOnEach { view.hideLoading() }
                 .subscribe({ familyMembers ->
                     view.setUpSpinner(familyMembers)
                 }, {
@@ -51,7 +51,7 @@ class CreateNoteActivityPresenter @Inject constructor(
                 notesApi.createNote(userDataStore.loggedInUser().id!!, familyMemberId, note)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
-                    .doOnTerminate { view.hideLoading() }
+                    .doOnEach { view.hideLoading() }
                     .subscribe({
                         view.setResult(RC_CREATE_NOTE)
                         view.finish()

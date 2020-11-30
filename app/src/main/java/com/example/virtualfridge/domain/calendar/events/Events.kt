@@ -7,15 +7,14 @@ import com.example.virtualfridge.data.api.models.EventResponse
 import com.example.virtualfridge.utils.BaseViewComponentsViewHolder
 import com.example.virtualfridge.utils.BaseViewComponentsViewModel
 import kotlinx.android.synthetic.main.calendar_item_event.view.*
-import java.time.LocalDate
 
 data class EventViewModel(
     val id: String,
     val title: String,
     val description: String?,
     val place: String?,
-    val startDate: LocalDate,
-    val endDate: LocalDate
+    val startDate: String,
+    val endDate: String
 ) : BaseViewComponentsViewModel() {
 
     companion object {

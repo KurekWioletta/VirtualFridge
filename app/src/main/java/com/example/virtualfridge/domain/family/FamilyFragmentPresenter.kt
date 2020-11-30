@@ -4,7 +4,6 @@ import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.family.FamilyFragment.ValidationViewModel
-import com.example.virtualfridge.domain.family.invitations.InvitationViewModel
 import com.example.virtualfridge.domain.family.invitations.InvitationViewModel.Companion.fromResponse
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.isValidEmail
@@ -37,13 +36,6 @@ class FamilyFragmentPresenter @Inject constructor(
                 .subscribe({ view.updateInvitations(it) }, {
                     // TODO: handle error message
                     view.showAlert("ERROR")
-                    view.updateInvitations(
-                        listOf(
-                            InvitationViewModel("id1", "Mock1"),
-                            InvitationViewModel("id2", "Mock2"),
-                            InvitationViewModel("id3", "Mock3")
-                        )
-                    )
                 })
         )
     }

@@ -21,7 +21,7 @@ interface EventsApi {
     @FormUrlEncoded
     @PUT("events/edit")
     fun editEvent(
-        @Path("eventId") eventId: String,
+        @Field("eventId") eventId: String,
         @Field("title") title: String,
         @Field("text") text: String,
         @Field("place") place: String,

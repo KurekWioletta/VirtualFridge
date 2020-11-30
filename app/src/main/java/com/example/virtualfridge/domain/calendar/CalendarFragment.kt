@@ -146,8 +146,10 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    fun updateFamilyMembers(members: List<FamilyMemberViewModel>) =
+    fun updateFamilyMembers(members: List<FamilyMemberViewModel>) {
+        familyMembersAdapterViewModel.clear()
         familyMembersAdapterViewModel.addAll(members)
+    }
 
     fun currentFamilyMemberId(): String = (spFamilyMembers.selectedItem as FamilyMemberViewModel).id
 

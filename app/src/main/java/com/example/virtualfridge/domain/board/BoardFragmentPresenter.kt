@@ -16,12 +16,12 @@ class BoardFragmentPresenter @Inject constructor(
 
     private val triggerRefresh = BehaviorSubject.createDefault("")
 
-    fun init() {
+    fun init() =
         view.registerViewSubscription(triggerRefresh.flatMap {
             notesApi.notes(userDataStore.loggedInUser().id!!)
+                .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
         }
-            .map { fromResponse(it) }
             .compose { rxTransformerManager.applyIOScheduler(it) }
             .doOnSubscribe { view.showLoading() }
             .doOnEach { view.hideLoading() }
@@ -30,7 +30,6 @@ class BoardFragmentPresenter @Inject constructor(
                 view.showAlert("ERROR")
             })
         )
-    }
 
     fun refreshBoard() = triggerRefresh.onNext("")
 
