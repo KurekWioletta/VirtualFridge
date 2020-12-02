@@ -6,6 +6,7 @@ import com.example.virtualfridge.data.api.UserApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.login.google.GoogleLoginManager
+import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.validate
 import com.example.virtualfridge.utils.validationResult
@@ -16,6 +17,7 @@ class LoginActivityPresenter @Inject constructor(
     private val userApi: UserApi,
     private val userDataStore: UserDataStore,
     private val rxTransformerManager: RxTransformerManager,
+    private val apiErrorParser: ApiErrorParser,
     private val googleLoginManager: GoogleLoginManager
 ) {
 
@@ -49,7 +51,7 @@ class LoginActivityPresenter @Inject constructor(
                 .subscribe({
                     view.finish()
                 }, {
-                    // TODO: error handling
+                    view.showAlert(apiErrorParser.parse(it))
                 })
             )
         }

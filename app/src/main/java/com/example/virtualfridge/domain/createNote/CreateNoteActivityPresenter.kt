@@ -4,10 +4,10 @@ import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.FamilyApi
 import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.internal.UserDataStore
-import com.example.virtualfridge.domain.calendar.CalendarFragment
 import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel.Companion.fromResponse
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity.Companion.RC_CREATE_NOTE
 import com.example.virtualfridge.domain.createNote.CreateNoteActivity.ValidationViewModel
+import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.validate
 import com.example.virtualfridge.utils.validationResult
@@ -17,12 +17,13 @@ class CreateNoteActivityPresenter @Inject constructor(
     private val view: CreateNoteActivity,
     private val notesApi: NotesApi,
     private val familyApi: FamilyApi,
+    private val apiErrorParser: ApiErrorParser,
     private val rxTransformerManager: RxTransformerManager,
     private val userDataStore: UserDataStore
 ) {
     fun init() =
         view.registerViewSubscription(
-            familyApi.familyMembers(userDataStore.loggedInUser().id!!)
+            familyApi.familyMembers(userDataStore.loggedInUser().id)
                 .map { fromResponse(it) }
                 .compose { rxTransformerManager.applyIOScheduler(it) }
                 .doOnSubscribe { view.showLoading() }
@@ -30,13 +31,7 @@ class CreateNoteActivityPresenter @Inject constructor(
                 .subscribe({ familyMembers ->
                     view.setUpSpinner(familyMembers)
                 }, {
-                    view.showAlert("ERROR")
-                    view.setUpSpinner(
-                        listOf(
-                            CalendarFragment.FamilyMemberViewModel("1", "Jan", "Kowalski"),
-                            CalendarFragment.FamilyMemberViewModel("2", "Ania", "Kowalska")
-                        )
-                    )
+                    view.showAlert(apiErrorParser.parse(it))
                 })
         )
 
@@ -48,7 +43,7 @@ class CreateNoteActivityPresenter @Inject constructor(
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
             view.registerViewSubscription(
-                notesApi.createNote(userDataStore.loggedInUser().id!!, familyMemberId, note)
+                notesApi.createNote(userDataStore.loggedInUser().id, familyMemberId, note)
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnEach { view.hideLoading() }
@@ -56,8 +51,7 @@ class CreateNoteActivityPresenter @Inject constructor(
                         view.setResult(RC_CREATE_NOTE)
                         view.finish()
                     }, {
-                        view.setResult(RC_CREATE_NOTE)
-                        view.finish()
+                        view.showAlert(apiErrorParser.parse(it))
                     })
             )
         }

@@ -67,10 +67,7 @@ class FamilyFragment : BaseFragment() {
         leaveFamilyContainer.gone()
     }
 
-    fun invitationSent() {
-        etInviteEmail.text.clear()
-        // TODO: Show message
-    }
+    fun invitationSent() = etInviteEmail.text.clear()
 
     fun updateInvitations(items: List<InvitationViewModel>) = adapter.setItems(items)
 

@@ -60,7 +60,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun selectPage(position: Int) {
-        // TODO: cache current page properly
         if (selectedPosition != position) {
             selectedPosition = position
 
@@ -86,8 +85,6 @@ class MainActivity : BaseActivity() {
     private fun tagForFragment(position: Int) = "MainActivityFragment$position"
 
     companion object {
-        fun getIntent(activity: BaseActivity) = Intent(activity, MainActivity::class.java)
-
         fun getIntentWithClearStack(activity: BaseActivity) =
             Intent(
                 activity,

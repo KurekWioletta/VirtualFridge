@@ -3,8 +3,7 @@ package com.example.virtualfridge.data.api.models
 import com.example.virtualfridge.data.internal.models.User
 
 data class UserResponse(
-    // TODO: remove ?
-    val id: String?,
+    val id: String,
     val email: String,
     val firstName: String,
     val lastName: String,

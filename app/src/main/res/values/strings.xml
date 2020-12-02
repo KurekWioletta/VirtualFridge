@@ -5,6 +5,7 @@
 
     <string name="login_password">Password</string>
     <string name="login_login">Log in</string>
+    <string name="login_google_error">Couldn\'t sign in with google</string>
     <string name="login_google">Sign in with google</string>
     <string name="login_register">Don\'t have account? Sign up</string>
 
@@ -50,6 +51,7 @@
 
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>
+    <string name="error_unknown">Oops something went wrong…</string>
     <string name="error_email">The e-mail address is invalid.</string>
 
     <string name="dialog_progress">Loading…</string>

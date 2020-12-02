@@ -12,6 +12,7 @@ class RegisterActivityPresenter @Inject constructor(
     private val view: RegisterActivity,
     private val userApi: UserApi,
     private val userDataStore: UserDataStore,
+    private val apiErrorParser: ApiErrorParser,
     private val rxTransformerManager: RxTransformerManager
 ) {
 
@@ -35,9 +36,9 @@ class RegisterActivityPresenter @Inject constructor(
                     .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .subscribe({
-                        view.openMainActivity()
+                        view.openLoginActivity()
                     }, {
-                        // TODO: error handling
+                        view.showAlert(apiErrorParser.parse(it))
                     })
             )
         }

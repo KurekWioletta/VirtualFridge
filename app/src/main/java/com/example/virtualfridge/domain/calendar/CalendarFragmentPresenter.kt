@@ -6,6 +6,7 @@ import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel
 import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberViewModel.Companion.fromResponse
 import com.example.virtualfridge.domain.calendar.events.EventViewModel
+import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -20,6 +21,7 @@ class CalendarFragmentPresenter @Inject constructor(
     private val eventsApi: EventsApi,
     private val familyApi: FamilyApi,
     private val userDataStore: UserDataStore,
+    private val apiErrorParser: ApiErrorParser,
     private val rxTransformerManager: RxTransformerManager
 ) {
     private val events = mutableMapOf<LocalDate, List<EventViewModel>>()
@@ -30,12 +32,12 @@ class CalendarFragmentPresenter @Inject constructor(
 
     fun init() = view.registerViewSubscription(
         Observable.combineLatest(
-            familyApi.familyMembers(userDataStore.loggedInUser().id!!)
+            familyApi.familyMembers(userDataStore.loggedInUser().id)
                 .map { fromResponse(it) },
             triggerRefresh.flatMap { userId ->
                 eventsApi.events(
                     if (userId.isEmpty()) {
-                        userDataStore.loggedInUser().id!!
+                        userDataStore.loggedInUser().id
                     } else {
                         userId
                     }
@@ -57,7 +59,7 @@ class CalendarFragmentPresenter @Inject constructor(
                     )
                 )
             }, {
-                view.showAlert("ERROR")
+                view.showAlert(apiErrorParser.parse(it))
             })
     )
 
@@ -107,7 +109,7 @@ class CalendarFragmentPresenter @Inject constructor(
             .subscribe({
                 triggerRefresh(view.currentFamilyMemberId())
             }, {
-                view.showAlert("ERROR")
+                view.showAlert(apiErrorParser.parse(it))
             })
         )
 }

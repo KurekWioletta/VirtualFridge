@@ -1,5 +1,6 @@
 package com.example.virtualfridge.domain.settings
 
+import android.content.Context
 import android.content.Intent
 import com.example.virtualfridge.domain.base.BaseActivity
 import com.example.virtualfridge.domain.login.google.GoogleLoginListener
@@ -25,6 +26,9 @@ class SettingsActivityProvidesModule {
 abstract class SettingsActivityBindsModule {
 
     @Binds
-    abstract fun provideBaseActivity(loginActivity: SettingsActivity): BaseActivity
+    abstract fun provideBaseActivity(settingsActivity: SettingsActivity): BaseActivity
+
+    @Binds
+    abstract fun provideContext(settingsActivity: SettingsActivity): Context
 
 }

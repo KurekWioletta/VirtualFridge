@@ -5,6 +5,7 @@ import com.example.virtualfridge.data.api.UserApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.base.BaseActivity
+import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,6 +17,7 @@ class GoogleLoginManager @Inject constructor(
     private val activity: BaseActivity,
     private val userApi: UserApi,
     private val userDataStore: UserDataStore,
+    private val apiErrorParser: ApiErrorParser,
     private val googleLoginListener: GoogleLoginListener,
     private val rxTransformerManager: RxTransformerManager
 ) {
@@ -56,14 +58,12 @@ class GoogleLoginManager @Inject constructor(
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { activity.showLoading() }
                     .doOnTerminate { activity.hideLoading() }
-                    .doOnEach {}
                     .doOnError { logout() }
                     .subscribe({
                         // TODO: in response get info if user confirmed
                         googleLoginListener.openMainActivity()
-
                     }, {
-                        // TODO: generic error handling
+                        activity.showAlert(apiErrorParser.parse(it))
                     })
                 )
             }
@@ -78,7 +78,6 @@ class GoogleLoginManager @Inject constructor(
 
     fun deleteAccount() = mGoogleSignInClient.revokeAccess()
         .addOnCompleteListener(activity) {
-            // TODO("Not yet implemented")
         }
 
 }

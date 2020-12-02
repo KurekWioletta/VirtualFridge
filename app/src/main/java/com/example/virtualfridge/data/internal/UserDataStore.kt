@@ -43,8 +43,7 @@ class UserDataStore constructor(
 
     fun cacheUser(user: User) = GlobalScope.launch {
         dataStore.edit { userData ->
-            // TODO: remove ?: ""
-            userData[preferencesKey<String>("id")] = user.id ?: ""
+            userData[preferencesKey<String>("id")] = user.id
             userData[preferencesKey<String>("email")] = user.email
             userData[preferencesKey<String>("first_name")] = user.firstName
             userData[preferencesKey<String>("last_name")] = user.lastName

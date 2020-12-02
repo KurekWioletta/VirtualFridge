@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.virtualfridge.R
 
-// TODO: extract base logic to be able to handle multiple dialogs properly
 class VfProgressDialog: AppCompatDialogFragment() {
 
     val dialogTag: String

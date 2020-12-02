@@ -55,9 +55,7 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
     override fun openGoogleLoginRequest(intent: Intent) =
         startActivityForResult(intent, RC_GOOGLE_LOGIN_REQUEST);
 
-    override fun showGoogleLoginError() {
-        // TODO: error dialog
-    }
+    override fun showGoogleLoginError() = showAlert(getString(R.string.login_google_error))
 
     override fun openMainActivity() {
         finish()
@@ -80,5 +78,11 @@ class LoginActivity : BaseActivity(), GoogleLoginListener {
 
     companion object {
         fun getIntent(activity: BaseActivity) = Intent(activity, LoginActivity::class.java)
+
+        fun getIntentWithClearStack(activity: BaseActivity) =
+            Intent(
+                activity,
+                MainActivity::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 }
