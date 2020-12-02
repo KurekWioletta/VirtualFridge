@@ -30,10 +30,14 @@ class CreateEventActivity : BaseActivity() {
 
     fun showValidationResults(validationViewModel: ValidationViewModel) {
         etTitle.error = validationViewModel.titleError
+        etStartDate.error = validationViewModel.startDateError
+        etEndDate.error = validationViewModel.endDateError
     }
 
     data class ValidationViewModel(
-        val titleError: String?
+        val titleError: String?,
+        val startDateError: String?,
+        val endDateError: String?
     ) : BaseValidationViewModel() {
         override fun toList() = listOf(titleError)
     }

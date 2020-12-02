@@ -42,8 +42,8 @@
     <string name="create_event_title">Title</string>
     <string name="create_event_description">Description…</string>
     <string name="create_event_place">Place</string>
-    <string name="create_event_start_date">Start date</string>
-    <string name="create_event_end_date">End date</string>
+    <string name="create_event_start_date">Start date (dd/mm/yyyy)</string>
+    <string name="create_event_end_date">End date (dd/mm/yyyy)</string>
     <string name="create_event_create_event">Create event</string>
 
     <string name="create_note_note">Note…</string>
@@ -51,6 +51,7 @@
 
     <string name="error_password">Password has to contain 6 or more characters.</string>
     <string name="error_field_required">This fields is required.</string>
+    <string name="error_date">The date is invalid.</string>
     <string name="error_unknown">Oops something went wrong…</string>
     <string name="error_email">The e-mail address is invalid.</string>
 

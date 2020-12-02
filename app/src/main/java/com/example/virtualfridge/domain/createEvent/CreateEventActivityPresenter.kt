@@ -4,10 +4,7 @@ import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.EventsApi
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.createEvent.CreateEventActivity.Companion.RC_CREATE_EVENT
-import com.example.virtualfridge.utils.ApiErrorParser
-import com.example.virtualfridge.utils.RxTransformerManager
-import com.example.virtualfridge.utils.validate
-import com.example.virtualfridge.utils.validationResult
+import com.example.virtualfridge.utils.*
 import javax.inject.Inject
 
 class CreateEventActivityPresenter @Inject constructor(
@@ -20,13 +17,15 @@ class CreateEventActivityPresenter @Inject constructor(
 
     fun createEventClicked(
         title: String,
-        description: String?,
-        place: String?,
+        description: String,
+        place: String,
         startDate: String,
         endDate: String
     ) {
         val validationViewModel = CreateEventActivity.ValidationViewModel(
-            title.validate(view.getString(R.string.error_field_required)) { it.isNotEmpty() }
+            title.validate(view.getString(R.string.error_field_required)) { it.isNotEmpty() },
+            startDate.validate(view.getString(R.string.error_date)) { it.isValidDate() },
+            endDate.validate(view.getString(R.string.error_date)) { it.isValidDate() }
         )
 
         view.showValidationResults(validationViewModel)
