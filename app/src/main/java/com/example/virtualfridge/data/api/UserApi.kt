@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface UserApi {
     @FormUrlEncoded
@@ -31,4 +32,11 @@ interface UserApi {
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String
     ): Observable<UserResponse>
+
+    @FormUrlEncoded
+    @PUT("user/notifications")
+    fun notifications(
+        @Field("userId") userId: String,
+        @Field("messagingToken") messagingToken: String?
+    ): Observable<String>
 }

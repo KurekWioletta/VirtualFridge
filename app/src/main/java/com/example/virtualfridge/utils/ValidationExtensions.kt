@@ -2,7 +2,6 @@ package com.example.virtualfridge.utils
 
 import android.util.Patterns
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 abstract class BaseValidationViewModel() {
@@ -24,7 +23,7 @@ fun String.isValidDate(): Boolean {
             .matches()
     ) {
         try {
-            LocalDate.parse(this, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            LocalDate.parse(this, dateTimeFormatter)
             true
         } catch (e: Exception) {
             false

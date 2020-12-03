@@ -8,6 +8,8 @@ import com.example.virtualfridge.domain.calendar.CalendarFragment.FamilyMemberVi
 import com.example.virtualfridge.domain.calendar.events.EventViewModel
 import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
+import com.example.virtualfridge.utils.dateTimeFormatter
+import com.example.virtualfridge.utils.rangeTo
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject
@@ -24,7 +26,7 @@ class CalendarFragmentPresenter @Inject constructor(
     private val apiErrorParser: ApiErrorParser,
     private val rxTransformerManager: RxTransformerManager
 ) {
-    private val events = mutableMapOf<LocalDate, List<EventViewModel>>()
+    private val cachedEvents = mutableMapOf<LocalDate, MutableList<EventViewModel>>()
 
     private val triggerRefresh = BehaviorSubject.createDefault<String>("")
     private val monthYearFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
@@ -52,12 +54,18 @@ class CalendarFragmentPresenter @Inject constructor(
             .doOnEach { view.hideLoading() }
             .subscribe({ (family, events) ->
                 view.updateFamilyMembers(family)
-                view.updateEventsOnCalendar(
-                    mapOf(
-                        view.currentDay.plusDays(1) to true,
-                        view.currentDay.plusDays(2) to true
-                    )
-                )
+                events.forEach {
+                    val startDate = LocalDate.parse(it.startDate, dateTimeFormatter)
+                    val endDate = LocalDate.parse(it.endDate, dateTimeFormatter)
+                    for (date in startDate.rangeTo(endDate)) {
+                        if (cachedEvents.contains(date)) {
+                            cachedEvents[date]!!.add(it)
+                        } else {
+                            cachedEvents[date] = mutableListOf(it)
+                        }
+                    }
+                }
+                view.updateEventsOnCalendar(cachedEvents.mapValues { true })
             }, {
                 view.showAlert(apiErrorParser.parse(it))
             })
@@ -74,26 +82,9 @@ class CalendarFragmentPresenter @Inject constructor(
             view.updateDate(
                 date, selectedDayFormatter.format(date)
             )
-            view.updateEventsList(
-                listOf(
-                    EventViewModel(
-                        "",
-                        "titleNote2",
-                        "contentNote2",
-                        "placeNote2",
-                        view.currentDay.toString(),
-                        view.currentDay.toString()
-                    ),
-                    EventViewModel(
-                        "",
-                        "titleNote1",
-                        "contentNote1",
-                        "placeNote1",
-                        view.currentDay.toString(),
-                        view.currentDay.toString()
-                    )
-                )
-            )
+            if (cachedEvents.containsKey(date)) {
+                view.updateEventsList(cachedEvents[view.selectedDate]!!)
+            }
         }
     }
 

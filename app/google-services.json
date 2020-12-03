@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "858118980521",
+    "project_id": "virtualfridge-f724b",
+    "storage_bucket": "virtualfridge-f724b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858118980521:android:cd7fcc41901c589a707ab8",
+        "android_client_info": {
+          "package_name": "com.example.virtualfridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858118980521-d8t6lrcelrmi7vputds2vl9qpclfcfj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtualfridge",
+            "certificate_hash": "ec005fb3954cb75c513163525223aedef3eb71a2"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYEdmtu_sNrPRIPBi_OxUQUd8RC8OroTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,9 @@ package com.example.virtualfridge.domain.logout
 
 import com.example.virtualfridge.data.internal.UserDataStore
 import com.example.virtualfridge.domain.login.google.GoogleLoginManager
+import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
+
 
 class LogoutManager @Inject constructor(
     private val googleLoginManager: GoogleLoginManager,
@@ -14,6 +16,7 @@ class LogoutManager @Inject constructor(
         if (googleLoginManager.userLoggedIn()) {
             googleLoginManager.logout()
         }
+        FirebaseMessaging.getInstance().deleteToken()
         userDataStore.clearStore()
     }
 

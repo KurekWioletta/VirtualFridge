@@ -20,7 +20,11 @@ class ApiErrorParser @Inject constructor(
                 val apiException =
                     jsonAdapter.fromJson(throwable.response()!!.errorBody()!!.string())
 
-                apiException!!.message!!
+                if (apiException!!.message.isNullOrEmpty()) {
+                    context.getString(R.string.error_unknown)
+                } else {
+                    apiException!!.message!!
+                }
             } catch (e: Exception) {
                 context.getString(R.string.error_unknown)
             }

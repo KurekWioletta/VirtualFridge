@@ -6,6 +6,7 @@
     <string name="login_password">Password</string>
     <string name="login_login">Log in</string>
     <string name="login_google_error">Couldn\'t sign in with google</string>
+    <string name="login_login_error">Oops… couldn\'t sign in</string>
     <string name="login_google">Sign in with google</string>
     <string name="login_register">Don\'t have account? Sign up</string>
 

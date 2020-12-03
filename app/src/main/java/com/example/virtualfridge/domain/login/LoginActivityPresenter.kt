@@ -10,6 +10,8 @@ import com.example.virtualfridge.utils.ApiErrorParser
 import com.example.virtualfridge.utils.RxTransformerManager
 import com.example.virtualfridge.utils.validate
 import com.example.virtualfridge.utils.validationResult
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
 class LoginActivityPresenter @Inject constructor(
@@ -43,17 +45,31 @@ class LoginActivityPresenter @Inject constructor(
 
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
-            view.registerViewSubscription(userApi.loginUser(email, password)
-                .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
-                .compose { rxTransformerManager.applyIOScheduler(it) }
-                .doOnSubscribe { view.showLoading() }
-                .doOnTerminate { view.hideLoading() }
-                .subscribe({
-                    view.finish()
-                }, {
-                    view.showAlert(apiErrorParser.parse(it))
-                })
-            )
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    // TODO: error tracking
+                    view.showAlert(view.getString(R.string.login_login_error))
+                    return@OnCompleteListener
+                }
+
+                view.registerViewSubscription(userApi.loginUser(email, password)
+                    .map {
+                        userApi.notifications(userId = it.id, messagingToken = task.result)
+                        it
+                    }
+                    .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                    .compose { rxTransformerManager.applyIOScheduler(it) }
+                    .doOnSubscribe { view.showLoading() }
+                    .doOnTerminate { view.hideLoading() }
+                    .subscribe({
+                        view.openMainActivity()
+                    }, {
+                        view.showAlert(apiErrorParser.parse(it))
+                    })
+                )
+            }).addOnFailureListener {
+                view.showAlert(view.getString(R.string.login_login_error))
+            }
         }
     }
 

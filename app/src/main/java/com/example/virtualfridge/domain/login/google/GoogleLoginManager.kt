@@ -1,6 +1,7 @@
 package com.example.virtualfridge.domain.login.google
 
 import android.content.Intent
+import com.example.virtualfridge.R
 import com.example.virtualfridge.data.api.UserApi
 import com.example.virtualfridge.data.api.models.mapToUser
 import com.example.virtualfridge.data.internal.UserDataStore
@@ -11,6 +12,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
 class GoogleLoginManager @Inject constructor(
@@ -47,25 +50,38 @@ class GoogleLoginManager @Inject constructor(
             val account = GoogleSignIn.getSignedInAccountFromIntent(intent)
                 .getResult(ApiException::class.java)
             if (account != null) {
-                activity.registerViewSubscription(userApi
-                    .registerUserWithGoogle(
-                        account.email ?: "",
-                        account.id ?: "",
-                        account.givenName ?: "",
-                        account.familyName ?: ""
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        // TODO: error tracking
+                        activity.showAlert(activity.getString(R.string.login_login_error))
+                        return@OnCompleteListener
+                    }
+
+                    activity.registerViewSubscription(userApi
+                        .registerUserWithGoogle(
+                            account.email ?: "",
+                            account.id ?: "",
+                            account.givenName ?: "",
+                            account.familyName ?: ""
+                        )
+                        .map {
+                            userApi.notifications(userId = it.id, messagingToken = task.result)
+                            it
+                        }
+                        .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                        .compose { rxTransformerManager.applyIOScheduler(it) }
+                        .doOnSubscribe { activity.showLoading() }
+                        .doOnTerminate { activity.hideLoading() }
+                        .doOnError { logout() }
+                        .subscribe({
+                            googleLoginListener.openMainActivity()
+                        }, {
+                            activity.showAlert(apiErrorParser.parse(it))
+                        })
                     )
-                    .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
-                    .compose { rxTransformerManager.applyIOScheduler(it) }
-                    .doOnSubscribe { activity.showLoading() }
-                    .doOnTerminate { activity.hideLoading() }
-                    .doOnError { logout() }
-                    .subscribe({
-                        // TODO: in response get info if user confirmed
-                        googleLoginListener.openMainActivity()
-                    }, {
-                        activity.showAlert(apiErrorParser.parse(it))
-                    })
-                )
+                }).addOnFailureListener {
+                    googleLoginListener.showGoogleLoginError()
+                }
             }
         } catch (e: ApiException) {
             googleLoginListener.showGoogleLoginError()
