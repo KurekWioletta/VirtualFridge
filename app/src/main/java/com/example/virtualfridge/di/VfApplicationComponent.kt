@@ -2,7 +2,6 @@ package com.example.virtualfridge.di
 
 import android.app.Application
 import com.example.virtualfridge.VfApplication
-import com.example.virtualfridge.VfApplicationModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

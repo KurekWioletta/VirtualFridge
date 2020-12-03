@@ -1,4 +1,4 @@
-package com.example.virtualfridge
+package com.example.virtualfridge.di
 
 import android.app.Application
 import com.example.virtualfridge.data.internal.UserDataStore
