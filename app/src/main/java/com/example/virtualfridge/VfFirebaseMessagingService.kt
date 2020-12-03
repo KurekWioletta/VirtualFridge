@@ -5,13 +5,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import javax.inject.Singleton
 import com.example.virtualfridge.R as VirtualfridgeR
 
-
+@Singleton
 class VfFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
@@ -56,11 +56,11 @@ class VfFirebaseMessagingService : FirebaseMessagingService() {
 
             mNotificationManager.notify(1000, notificationBuilder.build())
         }
+        sendRegistrationToServer("")
     }
 
-    private fun sendRegistrationToServer(token: String) {
-        Log.i("FIREBASE_TOKEN", token)
-    }
+    private fun sendRegistrationToServer(token: String) =
+        (application as VfApplication).refreshNotificationToken("asdf")
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "VirtualFridge_channel"

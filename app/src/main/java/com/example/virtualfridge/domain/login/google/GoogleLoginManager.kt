@@ -64,11 +64,13 @@ class GoogleLoginManager @Inject constructor(
                             account.givenName ?: "",
                             account.familyName ?: ""
                         )
-                        .map {
-                            userApi.notifications(userId = it.id, messagingToken = task.result)
-                            it
-                        }
                         .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                        .flatMap {
+                            userApi.notifications(
+                                userId = it.id,
+                                messagingToken = task.result
+                            )
+                        }
                         .compose { rxTransformerManager.applyIOScheduler(it) }
                         .doOnSubscribe { activity.showLoading() }
                         .doOnTerminate { activity.hideLoading() }

@@ -53,11 +53,13 @@ class LoginActivityPresenter @Inject constructor(
                 }
 
                 view.registerViewSubscription(userApi.loginUser(email, password)
-                    .map {
-                        userApi.notifications(userId = it.id, messagingToken = task.result)
-                        it
-                    }
                     .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                    .flatMap {
+                        userApi.notifications(
+                            userId = it.id,
+                            messagingToken = task.result
+                        )
+                    }
                     .compose { rxTransformerManager.applyIOScheduler(it) }
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }
