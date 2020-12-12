@@ -54,6 +54,7 @@ class CalendarFragmentPresenter @Inject constructor(
             .doOnEach { view.hideLoading() }
             .subscribe({ (family, events) ->
                 view.updateFamilyMembers(family)
+                cachedEvents.clear()
                 events.forEach {
                     val startDate = LocalDate.parse(it.startDate, dateTimeFormatter)
                     val endDate = LocalDate.parse(it.endDate, dateTimeFormatter)
