@@ -45,7 +45,7 @@ class EventViewHolder(
         itemView.tvDescription.text = item.description
         itemView.tvPlace.text = item.place
         itemView.tvStartDate.text = item.startDate
-        itemView.tvEndDate.text = item.tvEndDate
+        itemView.tvEndDate.text = item.endDate
         itemView.setOnClickListener {
             onClick.invoke(item)
         }
