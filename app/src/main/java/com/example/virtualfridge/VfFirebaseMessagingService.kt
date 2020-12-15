@@ -60,7 +60,7 @@ class VfFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendRegistrationToServer(token: String) =
-        (application as VfApplication).refreshNotificationToken("asdf")
+        (application as VfApplication).refreshNotificationToken(token)
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "VirtualFridge_channel"

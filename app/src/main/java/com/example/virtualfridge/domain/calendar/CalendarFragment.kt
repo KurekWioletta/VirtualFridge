@@ -108,12 +108,6 @@ class CalendarFragment : BaseFragment() {
                 selectDate(currentDay)
             }
         }
-        updateFamilyMembers(
-            listOf(
-                FamilyMemberViewModel("1", "Jan", "Kowalski"),
-                FamilyMemberViewModel("2", "Ania", "Kowalska")
-            )
-        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
