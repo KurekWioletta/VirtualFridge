@@ -45,11 +45,14 @@ class GoogleLoginManager @Inject constructor(
     fun requestLogin() =
         googleLoginListener.openGoogleLoginRequest(mGoogleSignInClient.signInIntent)
 
+    // logowanie przez google
     fun login(intent: Intent?) {
         try {
+            // jesli konto istnieje na urzadzeniu to logujemy/rejestrujemy usera
             val account = GoogleSignIn.getSignedInAccountFromIntent(intent)
                 .getResult(ApiException::class.java)
             if (account != null) {
+                // Pobranie tokenu fla firebaseMessaging
                 FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
                         // TODO: error tracking
@@ -57,6 +60,10 @@ class GoogleLoginManager @Inject constructor(
                         return@OnCompleteListener
                     }
 
+                    // jesli token zostal poprawnie pobrany to logujemy/rejestrujemy usera
+                    // z perspektywy kodu nie ma roznicy miedzy rejestracja przez google a logowaniem
+                    // to backend sobie rozroznia czy user probuje sie zalogowac czy zarejestrowac
+                    // poniewaz nie potrzebne nam jest haslo
                     activity.registerViewSubscription(userApi
                         .registerUserWithGoogle(
                             account.email ?: "",
@@ -64,7 +71,9 @@ class GoogleLoginManager @Inject constructor(
                             account.givenName ?: "",
                             account.familyName ?: ""
                         )
+                        // po otrzymaniu response z backendu cachujemy usera
                         .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                        // nastepnie wysylamy na backend nasz token z firebase messaging aby mozna bylo poprawnie wysylac powiadomienia
                         .flatMap {
                             userApi.notifications(
                                 userId = it.id,
@@ -76,6 +85,7 @@ class GoogleLoginManager @Inject constructor(
                         .doOnTerminate { activity.hideLoading() }
                         .doOnError { logout() }
                         .subscribe({
+                            // po poprawnym zalogowaniu/rejestracji otwieramy glowne activity
                             googleLoginListener.openMainActivity()
                         }, {
                             activity.showAlert(apiErrorParser.parse(it))

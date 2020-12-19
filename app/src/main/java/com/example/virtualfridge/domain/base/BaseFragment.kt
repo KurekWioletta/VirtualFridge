@@ -9,9 +9,12 @@ import io.reactivex.disposables.Disposable
 
 open class BaseFragment : Fragment() {
 
+    // to samo co w BaseActivity tylko dla fragmentow
     private var viewSubscriptions = CompositeDisposable()
 
     override fun onAttach(context: Context) {
+        // wstrzykniecie fragmentu do drzewa daggerowego, musimy skorzystac z AndroidSupportInjection, poniewaz
+        // nie ma jeszcze wsparcia w AndroidInjection dla fragmentow z androidx.fragment.app (jest wylacznie dla fragmentow z android.app)
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

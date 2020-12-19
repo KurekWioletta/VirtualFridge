@@ -31,6 +31,7 @@ class BoardFragment : BaseFragment() {
         parent: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // inicjalizacja adaptera dla reyclerView - typ viewModelu i wykonywana akcja na kliknieciu w element recyclerView
         adapter = ViewComponentsAdapter(NOTES, {
             showDeleteNoteDialog(it.id)
         })
@@ -41,9 +42,13 @@ class BoardFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         presenter.init()
 
+        // recyclerView potrzebuje layoutManager i adaptera
+        // layoutManager odpowiada za to jak nasz recyclerView bedzie sie zachowywał/wygladal, u nas
+        // dla board mamy forme tabeli 2 kolumnowej wertykalnie
         rvNotes.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvNotes.adapter = adapter
 
+        // otworzenie aktywnosci na floating button
         fabCreateNote.setOnClickListener {
             startActivityForResult(
                 CreateNoteActivity.getIntent(activity as BaseActivity),
@@ -52,6 +57,7 @@ class BoardFragment : BaseFragment() {
         }
     }
 
+    // jesli activity CreateNoteActivity zwroci nam result to odswiezamy nasze notatki
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_CREATE_NOTE) {

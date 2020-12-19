@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
+// w tym activity to nie ma nic oprocz zarzadzania widocznymi fragmentami
 class MainActivity : BaseActivity() {
 
     @Inject

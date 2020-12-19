@@ -15,9 +15,15 @@ open class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var dialogManager: DialogManager
 
+    // wszystkie asynchroniczne subskrybcje rxJavy sa rejestrowane
+    // w tym CompositeDisposable, ktore jest czyszczone w onDestroy aktywnosci
+    // co oznacza, ze zdarzenie asynchroniczne bedzie zylo tylko w ramach jednej aktywnosci
+    // jakbysmy chcieli miec takie zdarzenie dla calego cyklu zycia aplikacji to rejestrowalibysmy
+    // te zdarzenia w VfApplication
     private var viewSubscriptions = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // wstrzyknięcie aktywności do drzewa daggerowego
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
     }

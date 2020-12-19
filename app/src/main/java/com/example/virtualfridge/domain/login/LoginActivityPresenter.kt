@@ -25,20 +25,25 @@ class LoginActivityPresenter @Inject constructor(
     private val googleLoginManager: GoogleLoginManager
 ) {
 
+    // inicjalizacja GoogleSignIn client
     fun init() = googleLoginManager.initializeSignInClient()
 
+    // inicjalizacja GoogleSignIn client
     fun resume() = googleLoginManager.initializeSignInClient()
 
+    // sprawdzamy czy user jest zalogowany pobierajac dane z cache i sprawdzajac zalogowane konto przez google
     fun checkForLoggedInUser() {
         if (userDataStore.user() != null) {
             view.openMainActivity()
         } else {
+            // w sytuacji kiedy user jestt zalogowany w sesji google, ale nie mamy go w cache to wylogowujemy takiego usera
             if (googleLoginManager.userLoggedIn()) {
                 googleLoginManager.logout()
             }
         }
     }
 
+    // logowanie przez creditentials
     fun loginClicked(email: String, password: String) {
         val validationViewModel = LoginActivity.ValidationViewModel(
             email.validate(view.getString(R.string.error_field_required)) { it.isNotEmpty() },
@@ -47,6 +52,7 @@ class LoginActivityPresenter @Inject constructor(
 
         view.showValidationResults(validationViewModel)
         if (validationViewModel.validationResult()) {
+            // Pobranie tokenu fla firebaseMessaging
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     // TODO: error tracking
@@ -54,8 +60,11 @@ class LoginActivityPresenter @Inject constructor(
                     return@OnCompleteListener
                 }
 
+                // jesli token zostal poprawnie pobrany to logujemy usera
                 view.registerViewSubscription(userApi.loginUser(email, password)
+                    // po otrzymaniu response z backendu cachujemy usera
                     .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
+                    // nastepnie wysylamy na backend nasz token z firebase messaging aby mozna bylo poprawnie wysylac powiadomienia
                     .flatMap {
                         userApi.notifications(
                             userId = it.id,
@@ -66,6 +75,7 @@ class LoginActivityPresenter @Inject constructor(
                     .doOnSubscribe { view.showLoading() }
                     .doOnTerminate { view.hideLoading() }
                     .subscribe({
+                        // po poprawnym zalogowaniu/rejestracji otwieramy glowne activity
                         view.openMainActivity()
                     }, {
                         view.showAlert(apiErrorParser.parse(it))
