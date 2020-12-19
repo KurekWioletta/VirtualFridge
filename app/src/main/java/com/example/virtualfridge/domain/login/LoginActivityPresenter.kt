@@ -14,8 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
-// wszystkie zaleznosci musza zostac dostarczone w modulach daggerowych, poniewaz tutaj
-// wstrzykujemy presenter, ktory bedzie wykorzystany w activity
+// wszystkie zaleznosci musza zostac dostarczone w modulach daggerowych lub przez @Inject przy konstruktorze (np RxTransformerManager),
+// poniewaz tutaj wstrzykujemy presenter, ktory bedzie wykorzystany w activity
 class LoginActivityPresenter @Inject constructor(
     private val view: LoginActivity,
     private val userApi: UserApi,
