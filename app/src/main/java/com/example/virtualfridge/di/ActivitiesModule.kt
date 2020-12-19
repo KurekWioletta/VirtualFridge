@@ -22,6 +22,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivitiesModule {
 
+    // zostanie wygenerowany komponent dla mainActivity z podanymi w modules modulach zaleznosciami
     @ContributesAndroidInjector(
         modules = [
             MainActivityProvidesModule::class,
@@ -29,6 +30,7 @@ abstract class ActivitiesModule {
             BaseActivityModule::class
         ]
     )
+    // wstrzykniecie samego MainActivity (wszystkie elementy ktore posiadaja swoj komponent musza byc wstrzykniete do drzewa daggerowego - zaleznosci)
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(
