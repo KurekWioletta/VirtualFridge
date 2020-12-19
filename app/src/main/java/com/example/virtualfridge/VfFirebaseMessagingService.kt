@@ -56,7 +56,6 @@ class VfFirebaseMessagingService : FirebaseMessagingService() {
 
             mNotificationManager.notify(1000, notificationBuilder.build())
         }
-        sendRegistrationToServer("")
     }
 
     private fun sendRegistrationToServer(token: String) =
