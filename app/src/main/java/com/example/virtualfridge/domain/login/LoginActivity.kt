@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), GoogleLoginListener {
 
+    // wstrzykniecie dostarczonej zaleznosci
     @Inject
     lateinit var presenter: LoginActivityPresenter
 
