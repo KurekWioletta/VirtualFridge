@@ -36,7 +36,7 @@ class VfApplication : Application(), HasAndroidInjector {
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
-    // odswiezenie tokenu firebase messaging, wyslanie go na serwer, aby w bazie byl zawsze zapisany poprawny token
+    // wyslanie odswiezonego tokenu na serwer, aby w bazie byl zawsze zapisany poprawny token
     // dzieki niemu mozemy wyslac powiadomienie na konkretne urzadzenie
     fun refreshNotificationToken(token: String) {
         userDataStore.user()?.apply {
