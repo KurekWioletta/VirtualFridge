@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Singleton
 
+// przechowywanie danych uzytkownika, aby wiedziec czy ten byl wczesniej zalogowany
+// nie mamy sesji u nas :( nie pomyslalam o tym, mozna na pozniej, bo u nas nie potrzeba jakos super zaawansowanej autoryzacji
 @Singleton
 class UserDataStore constructor(
     context: Context

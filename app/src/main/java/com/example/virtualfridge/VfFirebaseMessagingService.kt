@@ -19,8 +19,11 @@ class VfFirebaseMessagingService : FirebaseMessagingService() {
         sendRegistrationToServer(token)
     }
 
+    // Wyswietlenie notyfikacji, Android inaczej traktuje notyfikacje, ktore przychodza gdy apka jest w tle a inaczej gdy
+    // apka jest otworzona.
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
+        // caly blok jest potrzebny aby wyswietlic notyfikacje kiedy apka jest otworzona
         remoteMessage.notification?.let {
             val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
@@ -58,6 +61,7 @@ class VfFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    // wyslanie nowego tokenu na serwer
     private fun sendRegistrationToServer(token: String) =
         (application as VfApplication).refreshNotificationToken(token)
 
