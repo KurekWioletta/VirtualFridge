@@ -26,6 +26,7 @@ class InvitationViewHolder(
     private val declineInvitationClick: ((String) -> Unit),
     parent: ViewGroup
 ) : BaseViewComponentsViewHolder(
+    // inflatowanie layoutu dla konkretnego viewHolderu
     LayoutInflater.from(parent.context).inflate(R.layout.family_item_invitation, parent, false)
 ) {
     override fun bind(item: BaseViewComponentsViewModel) {

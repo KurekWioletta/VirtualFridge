@@ -26,6 +26,7 @@ class VfApplication : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
+        // wstrzykniecie klasy aplikacji do glownego komponentu aplikacji, komponent ten jest klasa generowana
         DaggerVfApplicationComponent
             .builder()
             .applicationBind(this)
@@ -35,6 +36,8 @@ class VfApplication : Application(), HasAndroidInjector {
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
+    // odswiezenie tokenu firebase messaging, wyslanie go na serwer, aby w bazie byl zawsze zapisany poprawny token
+    // dzieki niemu mozemy wyslac powiadomienie na konkretne urzadzenie
     fun refreshNotificationToken(token: String) {
         userDataStore.user()?.apply {
             userApi.notifications(id, token)

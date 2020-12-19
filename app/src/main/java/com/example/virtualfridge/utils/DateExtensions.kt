@@ -3,6 +3,8 @@ package com.example.virtualfridge.utils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+// iterator stworzony po to zeby moc iterowac po datach (przydaje sie w kalendarzu)
+// https://www.netguru.com/codestories/traversing-through-dates-with-kotlin-range-expressions
 class DateIterator(
     val startDate: LocalDate,
     private val endDateInclusive: LocalDate,
