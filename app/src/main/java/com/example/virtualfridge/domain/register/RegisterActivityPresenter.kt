@@ -35,6 +35,8 @@ class RegisterActivityPresenter @Inject constructor(
                 userApi.registerUser(email, password, firstName, lastName)
                     .doOnNext { userDataStore.cacheUser(it.mapToUser()) }
                     .compose { rxTransformerManager.applyIOScheduler(it) }
+                    .doOnSubscribe { view.showLoading() }
+                    .doOnTerminate { view.hideLoading() }
                     .subscribe({
                         view.openLoginActivity()
                     }, {
