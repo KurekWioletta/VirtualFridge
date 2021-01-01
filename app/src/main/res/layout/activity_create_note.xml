@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.createEvent.CreateEventActivity">
+    tools:context="com.example.virtualfridge.domain.createEvent.CreateEventActivity"
+    android:background="@color/main_background">
 
     <Spinner
         android:id="@+id/spFamilyMembers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/SpinnerStyle"/>
 
     <EditText
         android:id="@+id/etNote"
@@ -19,7 +21,8 @@
         android:hint="@string/create_note_note"
         android:inputType="text|textMultiLine"
         android:gravity="top"
-        app:layout_constraintTop_toBottomOf="@+id/spFamilyMembers" />
+        app:layout_constraintTop_toBottomOf="@+id/spFamilyMembers"
+        style="@style/FormInputs"/>
 
     <Button
         android:id="@+id/btnCreateNote"
@@ -28,6 +31,7 @@
         android:text="@string/create_note_create_note"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNote" />
+        app:layout_constraintTop_toBottomOf="@+id/etNote"
+        style="@style/FormButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

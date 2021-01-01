@@ -3,13 +3,13 @@
     <item
         android:id="@+id/action_board"
         android:title="@string/navigation_menu_board"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@drawable/ic_board" />
     <item
         android:id="@+id/action_calendar"
         android:title="@string/navigation_menu_calendar"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@drawable/ic_calendar" />
     <item
         android:id="@+id/action_family"
         android:title="@string/navigation_menu_family"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@drawable/ic_family" />
 </menu>

@@ -4,17 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.register.RegisterActivity">
+    tools:context="com.example.virtualfridge.domain.register.RegisterActivity"
+    android:background="@color/main_background">
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toTopOf="parent"
+
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etPassword"
@@ -22,27 +26,37 @@
         android:layout_height="wrap_content"
         android:hint="@string/register_password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail"
+
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/register_first_name"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"
+
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/register_last_name"
-        app:layout_constraintTop_toBottomOf="@+id/etFirstName" />
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/etFirstName"
+
+        style="@style/FormInputs"/>
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register_register"
-        app:layout_constraintTop_toBottomOf="@+id/etLastName" />
+        app:layout_constraintTop_toBottomOf="@+id/etLastName"
+
+        style="@style/FormButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

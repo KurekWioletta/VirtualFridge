@@ -153,8 +153,10 @@ class CalendarFragment : BaseFragment() {
         AlertDialog.Builder(context)
             .setItems(
                 arrayOf(
-                    getString(R.string.calendar_edit_event)
+                    getString(R.string.calendar_edit_event),
                     // TODO: edit - getString(R.string.calendar_delete_event)
+                    getString(R.string.calendar_delete_event)
+
                 )
             ) { _, which ->
                 when (which) {
