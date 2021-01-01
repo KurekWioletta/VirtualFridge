@@ -61,7 +61,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEndDate"
-
+    android:layout_marginTop="20dp"
+        android:paddingHorizontal="15dp"
         style="@style/FormButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
