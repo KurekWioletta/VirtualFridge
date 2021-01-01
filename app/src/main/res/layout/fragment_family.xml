@@ -97,19 +97,24 @@
             android:hint="@string/family_create_family_name"
             android:imeOptions="actionDone"
             android:inputType="text"
+
             app:layout_constraintTop_toBottomOf="@+id/tvCreateFamilyLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnCreateFamily"
             app:layout_constraintBottom_toBottomOf="@+id/btnCreateFamily"
             app:layout_constraintWidth_percent="0.6"
-            android:layout_marginTop="50dp"
-            style="@style/FormInputs"/>
+            style="@style/FormInputs"
+            android:layout_marginTop="62dp"
+
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="10dp"
+         />
 
         <Button
             android:id="@+id/btnCreateFamily"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:text="@string/family_create_family_btn"
@@ -119,6 +124,9 @@
             style="@style/FormButton"
             android:textColor="@color/green_dark"
             app:layout_constraintWidth_percent="0.3"
+
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="50dp"
             />
 
         <LinearLayout
