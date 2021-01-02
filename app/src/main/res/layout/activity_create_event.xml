@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.createEvent.CreateEventActivity">
+    tools:context="com.example.virtualfridge.domain.createEvent.CreateEventActivity"
+    android:background="@color/main_background">
 
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/create_event_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etDescription"
@@ -20,14 +22,17 @@
         android:hint="@string/create_event_description"
         android:inputType="text|textMultiLine"
         android:gravity="top"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/etTitle"
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etPlace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/create_event_place"
-        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/etDescription"
+        style="@style/FormInputs"
+        />
 
     <EditText
         android:id="@+id/etStartDate"
@@ -35,7 +40,8 @@
         android:layout_height="wrap_content"
         android:inputType="date"
         android:hint="@string/create_event_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/etPlace" />
+        app:layout_constraintTop_toBottomOf="@+id/etPlace"
+        style="@style/FormInputs"/>
 
     <EditText
         android:id="@+id/etEndDate"
@@ -43,7 +49,9 @@
         android:layout_height="wrap_content"
         android:inputType="date"
         android:hint="@string/create_event_end_date"
-        app:layout_constraintTop_toBottomOf="@+id/etStartDate" />
+        app:layout_constraintTop_toBottomOf="@+id/etStartDate"
+
+        style="@style/FormInputs"/>
 
     <Button
         android:id="@+id/btnCreateEvent"
@@ -52,6 +60,9 @@
         android:text="@string/create_event_create_event"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEndDate" />
+        app:layout_constraintTop_toBottomOf="@+id/etEndDate"
+    android:layout_marginTop="20dp"
+        android:paddingHorizontal="15dp"
+        style="@style/FormButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

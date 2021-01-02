@@ -11,7 +11,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/btnAcceptInvitation" />
+        app:layout_constraintRight_toLeftOf="@+id/btnAcceptInvitation"
+        android:layout_margin="10dp"
+        android:minHeight="45dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"/>
 
     <Button
         android:id="@+id/btnAcceptInvitation"
@@ -20,7 +24,10 @@
         android:text="@string/family_invitations_accept_btn"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/btnDeclineInvitation" />
+        app:layout_constraintRight_toLeftOf="@+id/btnDeclineInvitation"
+        style="@style/FormButton"
+        android:textColor="@color/green_dark"
+        android:layout_margin="10dp"/>
 
     <Button
         android:id="@+id/btnDeclineInvitation"
@@ -29,6 +36,9 @@
         android:text="@string/family_invitations_decline_btn"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="#F00"
+        style="@style/FormButton"
+        android:layout_margin="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,23 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.settings.SettingsActivity">
+    tools:context="com.example.virtualfridge.domain.settings.SettingsActivity"
+    android:background="@color/main_background"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/leaveFamilyContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:minHeight="200dp">
 
         <TextView
             android:id="@+id/tvYourFamilyLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/family_your_family_label" />
+            android:text="@string/family_your_family_label"
+            android:paddingVertical="10dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:background="@color/main_dark_blue"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tvYourFamily"
@@ -29,22 +36,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tvYourFamilyLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnLeaveFamily"
-            app:layout_constraintBottom_toBottomOf="@+id/btnLeaveFamily" />
+            app:layout_constraintBottom_toBottomOf="@+id/btnLeaveFamily"
+            android:paddingVertical="13dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:textSize="15sp"
+            app:layout_constraintWidth_percent="0.60"
+            android:background="@color/white"
+           />
 
         <Button
             android:id="@+id/btnLeaveFamily"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tvYourFamilyLabel"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/family_your_family_leave_btn" />
+            android:text="@string/family_your_family_leave_btn"
+            style="@style/FormButton"
+            android:textColor="#F00"
+            android:layout_marginTop="50dp"
+            app:layout_constraintWidth_percent="0.30"
+            android:layout_marginRight="15dp"/>
 
         <LinearLayout
             android:id="@+id/llSplit1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="#000"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/btnLeaveFamily" />
 
@@ -55,16 +73,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/leaveFamilyContainer">
+        app:layout_constraintTop_toBottomOf="@+id/leaveFamilyContainer"
+        android:minHeight="200dp">
 
         <TextView
             android:id="@+id/tvCreateFamilyLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/family_create_family_label" />
+            android:text="@string/family_create_family_label"
+            android:paddingVertical="10dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:background="@color/main_dark_blue"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/etFamilyName"
@@ -74,29 +97,43 @@
             android:hint="@string/family_create_family_name"
             android:imeOptions="actionDone"
             android:inputType="text"
+
             app:layout_constraintTop_toBottomOf="@+id/tvCreateFamilyLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnCreateFamily"
-            app:layout_constraintBottom_toBottomOf="@+id/btnCreateFamily" />
+            app:layout_constraintBottom_toBottomOf="@+id/btnCreateFamily"
+            app:layout_constraintWidth_percent="0.6"
+            style="@style/FormInputs"
+            android:layout_marginTop="62dp"
+
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="10dp"
+         />
 
         <Button
             android:id="@+id/btnCreateFamily"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:text="@string/family_create_family_btn"
             app:layout_constraintTop_toBottomOf="@+id/tvCreateFamilyLabel"
             app:layout_constraintLeft_toRightOf="@+id/etFamilyName"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            style="@style/FormButton"
+            android:textColor="@color/green_dark"
+            app:layout_constraintWidth_percent="0.3"
+
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="50dp"
+            />
 
         <LinearLayout
             android:id="@+id/llSplit2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="#000"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/btnCreateFamily" />
 
@@ -104,52 +141,74 @@
 
     <TextView
         android:id="@+id/tvInviteLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/createFamilyContainer"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="@string/family_invite_label" />
+        android:text="@string/family_invite_label"
+        android:paddingVertical="8dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:background="@color/main_dark_blue"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/etInviteEmail"
+        style="@style/FormInputs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_margin="0dp"
+        android:layout_marginTop="50dp"
         android:hint="@string/email"
         android:imeOptions="actionDone"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/tvInviteLabel"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/btnInviteMember"
+        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/btnInviteMember"
-        app:layout_constraintBottom_toBottomOf="@+id/btnInviteMember" />
+        app:layout_constraintTop_toBottomOf="@+id/tvInviteLabel"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintWidth_percent="0.60" />
 
     <Button
         android:id="@+id/btnInviteMember"
-        android:layout_width="wrap_content"
+        style="@style/FormButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvInviteLabel"
+        android:text="@string/family_invite_btn"
+        android:textColor="@color/green_dark"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="@string/family_invite_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/tvInviteLabel"
+
+        android:layout_marginTop="50dp"
+        app:layout_constraintWidth_percent="0.30"
+        android:layout_marginRight="15dp"/>
 
     <LinearLayout
         android:id="@+id/llSplit3"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
-        android:background="#000"
+        android:minHeight="50dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/btnInviteMember" />
 
     <TextView
         android:id="@+id/tvInvitationsLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/llSplit3"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="@string/family_invitations_label" />
+        android:text="@string/family_invitations_label"
+        android:paddingVertical="8dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:background="@color/main_dark_blue"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInvitations"

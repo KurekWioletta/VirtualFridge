@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.virtualfridge.domain.main.MainActivity">
+    tools:context="com.example.virtualfridge.domain.main.MainActivity"
+    android:background="@color/main_background">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotes"
@@ -21,6 +22,7 @@
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_add_note"
+        app:rippleColor="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
