@@ -6,6 +6,7 @@ import com.example.virtualfridge.data.api.NotesApi
 import com.example.virtualfridge.data.api.UserApi
 import dagger.Module
 import dagger.Provides
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -17,7 +18,8 @@ object ApisModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://safe-peak-25532.herokuapp.com/")
+//            .baseUrl("https://safe-peak-25532.herokuapp.com/")
+            .baseUrl("http://10.0.2.2:8080".toHttpUrl())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .client(okHttpClient)

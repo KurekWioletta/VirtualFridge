@@ -15,7 +15,12 @@ data class NotesViewModel(
 
     companion object {
         fun fromResponse(response: List<NoteResponse>) = response.map {
-            NotesViewModel(it.id, "${it.text} - ${it.authorFirstName} ${it.authorLastName}")
+            val authorLine =
+                if (!it.authorFirstName.isNullOrEmpty()) "\nFrom: ${it.authorFirstName} ${it.authorLastName ?: ""}" else ""
+            val addressLine =
+                if (!it.addressFirstName.isNullOrEmpty()) "\nTo: ${it.addressFirstName} ${it.addressLastName ?: ""}" else ""
+
+            NotesViewModel(it.id, "${it.text}${authorLine}${addressLine}")
         }
     }
 }

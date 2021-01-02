@@ -64,6 +64,7 @@ class MainActivity : BaseActivity() {
             selectedPosition = position
 
             var selectedFragment = fragmentManager.findFragmentByTag(tagForFragment(position))
+            selectedFragment?.returnTransition
             val transaction = fragmentManager.beginTransaction().setReorderingAllowed(true)
 
             if (selectedFragment == null) {
@@ -73,9 +74,15 @@ class MainActivity : BaseActivity() {
                     selectedFragment,
                     tagForFragment(position)
                 )
+            } else {
+                transaction.add(
+                    R.id.flFragmentContainer,
+                    selectedFragment,
+                    tagForFragment(position)
+                )
             }
             if (activeFragment != null) {
-                transaction.hide(activeFragment as Fragment)
+                transaction.remove(activeFragment as Fragment)
             }
             transaction.show(selectedFragment).commit()
             activeFragment = selectedFragment

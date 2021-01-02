@@ -67,6 +67,11 @@ class CalendarFragmentPresenter @Inject constructor(
                     }
                 }
                 view.updateEventsOnCalendar(cachedEvents.mapValues { true })
+                if (cachedEvents.containsKey(view.selectedDate)) {
+                    view.updateEventsList(cachedEvents[view.selectedDate]!!)
+                } else {
+                    view.updateEventsList(emptyList())
+                }
             }, {
                 view.showAlert(apiErrorParser.parse(it))
             })
@@ -83,9 +88,11 @@ class CalendarFragmentPresenter @Inject constructor(
             view.updateDate(
                 date, selectedDayFormatter.format(date)
             )
-            if (cachedEvents.containsKey(date)) {
-                view.updateEventsList(cachedEvents[view.selectedDate]!!)
-            }
+        }
+        if (cachedEvents.containsKey(date)) {
+            view.updateEventsList(cachedEvents[view.selectedDate]!!)
+        } else {
+            view.updateEventsList(emptyList())
         }
     }
 

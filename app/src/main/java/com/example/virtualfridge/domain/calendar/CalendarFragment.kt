@@ -99,7 +99,10 @@ class CalendarFragment : BaseFragment() {
             }
         }
         fabCreateEvent.setOnClickListener {
-            startActivity(CreateEventActivity.getIntent(activity as BaseActivity))
+            startActivityForResult(
+                CreateEventActivity.getIntent(activity as BaseActivity),
+                RC_CREATE_EVENT
+            )
         }
 
         setUpCalendarView(view)
@@ -133,6 +136,7 @@ class CalendarFragment : BaseFragment() {
     fun updateEventsOnCalendar(events: Map<LocalDate, Boolean>) {
         this.events.clear()
         this.events.putAll(events)
+        calendarView.notifyCalendarChanged()
         events.keys.forEach {
             calendarView.adapter?.run {
                 calendarView.notifyDateChanged(it)
@@ -153,7 +157,6 @@ class CalendarFragment : BaseFragment() {
         AlertDialog.Builder(context)
             .setItems(
                 arrayOf(
-                    getString(R.string.calendar_edit_event),
                     // TODO: edit - getString(R.string.calendar_delete_event)
                     getString(R.string.calendar_delete_event)
 
@@ -161,9 +164,6 @@ class CalendarFragment : BaseFragment() {
             ) { _, which ->
                 when (which) {
                     0 -> {
-                        presenter.editEvent(event)
-                    }
-                    1 -> {
                         presenter.deleteEvent(event.id)
                     }
                 }
