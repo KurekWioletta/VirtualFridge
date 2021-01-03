@@ -6,38 +6,40 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="@string/app_name" />
+        android:text="@string/app_name"
+        style="@style/EventTextViews"
+      />
 
     <TextView
         android:id="@+id/tvDescription"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/EventTextViews"/>
 
     <TextView
         android:id="@+id/tvPlace"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/EventTextViews"/>
 
     <TextView
         android:id="@+id/tvStartDate"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvPlace"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/EventTextViews"/>
 
     <TextView
         android:id="@+id/tvEndDate"
-        android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tvStartDate"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/EventTextViews"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
